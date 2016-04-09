@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="cardPrefs"
+    android:title="Card Settings"
+    android:orientation="vertical">
+
+    <PreferenceCategory
+        android:title="Card Name"
+        android:key="NamePref">
+
+             <EditTextPreference
+                android:id="@+id/logotext"
+                android:title="Card Name"
+                 android:dialogTitle="Enter a Title for your Loyalty Card"
+                android:defaultValue="Loyalty Card"
+                android:selectAllOnFocus="true"
+                android:maxLength="14"
+                android:key="loyaltyCardOneNamePref" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Reuse Card?">
+        <Preference
+            android:key="resetPrefs"
+            android:title="Clear Card Settings"
+            android:enabled="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

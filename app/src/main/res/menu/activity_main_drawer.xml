@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/card_one"
+            android:icon="@drawable/ic_menu_star"
+            android:title="Loyalty Card" />
+        <item
+            android:id="@+id/card_two"
+            android:icon="@drawable/ic_menu_star"
+            android:title="Loyalty Card Two" />
+        <item
+            android:id="@+id/card_three"
+            android:icon="@drawable/ic_menu_star"
+            android:title="Loyalty Card Three" />
+        <item
+            android:id="@+id/card_four"
+            android:icon="@drawable/ic_menu_star"
+            android:title="Loyalty Card Four" />
+        <item
+            android:id="@+id/card_five"
+            android:icon="@drawable/ic_menu_star"
+            android:title="Loyalty Card Five" />
+
+
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/nav_manage"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Tools" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="About" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2D85F0</color>
+    <color name="colorPrimaryDark">#246dc6</color>
+    <color name="colorAccent">#212E67</color>
+
+    <color name="secondary">#1c78e7</color>
+    <color name="secondaryDark">#246dc6</color>
+    <color name="primary">#2D85F0</color>
+    <color name="primaryDark">#246dc6</color>
+    <color name="ternary">#ffffff</color>
+    <color name="accent">#212E67</color>
+
+    <color name="primaryText">#ffffff</color>
+    <color name="secondaryText">#FFFFFF</color>
+
+    <color name="drawer_header_bg">@color/secondary</color>
+    <color name="drawer_item_text_default">#867b7b</color>
+    <color name="drawer_item_text_checked">@color/primary</color>
+</resources>

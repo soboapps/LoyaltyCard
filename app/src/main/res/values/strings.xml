@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">LoyaltyCard</string>
+    <string name="app_title">Loyalty Card</string>
+    <string name="app_version">Version 1.008</string>
+    <string name="soboappsurl">http://www.soboapps.com</string>
+    <string name="intro_message"></string>
+    <string name="error">Error</string>
+    <string name="no_nfc">Sorry, This Device Doesn\'t Support NFC</string>
+    <string name="nfc_disabled">NFC is not enabled. Please go to the wireless settings to enable it.</string>
+    <string name="menu_main_clear_title">Clear all</string>
+    <string name="stag_url">360220573958</string>
+    <string name="storeurl">http://www.somewebsite.com</string>
+    <string name="storelocation">Our Locations</string>
+    <string name="storeabout">About Us</string>
+    <string name="store1street">1212 Some Street NW\nWashington, DC 20001</string>
+    <string name="store1phone">Phone: (555)555-1212</string>
+    <string name="store1fax">Fax: (555)555-1213</string>
+    <string name="store1hours">Hours: Mon - Fri, 6:30am - 4:00pm</string>
+    <string name="rules">One stamp for each purchase.\nNot valid in conjuction with any other coupons, offers, or discounts.\n</string>
+
+    <string-array
+        name="menu_Array">
+        <item>Settings</item>
+        <item>About US</item>
+    </string-array>
+
+    <string-array
+        name="nav_drawer_tag">
+        <item>item1</item>
+        <item>item2</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+</resources>
