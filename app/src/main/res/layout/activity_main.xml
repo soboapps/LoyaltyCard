@@ -69,7 +69,7 @@
                     android:layout_weight="1.0"
                     android:paddingLeft="20dp"
                     android:textColor="#ffffff"
-                    android:textSize="40sp"
+                    android:textSize="38sp"
 
                     android:text="@string/app_title"/>
             </LinearLayout>

@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-        Typeface tf = Typeface.createFromAsset(getAssets(),"gooddog.ttf");
+        Typeface tf = Typeface.createFromAsset(getAssets(),"rumraisin.ttf");
 
         logoTitleName = (TextView)findViewById(R.id.logo_text);
         logoTitleName.setTypeface(tf,Typeface.BOLD);
