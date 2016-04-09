@@ -15,7 +15,7 @@ Now I just need someone to do an iOS version :-)
 
 Todo list
 
-* Change cards Fragments.
+* Change cards to Fragments. I think this is what is need to have multiple accounts.
 * Allow multiple card accounts
 	Store each NFC Tag with a Company Name
 		Currently a card name can be set, but this is only for 1 registered Tag.
