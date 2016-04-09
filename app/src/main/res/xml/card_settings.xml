@@ -16,7 +16,7 @@
                  android:dialogTitle="Enter a Title for your Loyalty Card"
                 android:defaultValue="Loyalty Card"
                 android:selectAllOnFocus="true"
-                android:maxLength="14"
+                android:maxLength="25"
                 android:key="loyaltyCardOneNamePref" />
 
     </PreferenceCategory>

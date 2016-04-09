@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -143,9 +144,13 @@ public class MainActivity extends AppCompatActivity {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
+        Typeface tf = Typeface.createFromAsset(getAssets(),"gooddog.ttf");
+
         logoTitleName = (TextView)findViewById(R.id.logo_text);
+        logoTitleName.setTypeface(tf,Typeface.BOLD);
         cardOneTitle = (settings.getString("loyaltyCardOneNamePref", "Loyalty Card"));
         logoTitleName.setText(cardOneTitle);
+
 
         //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), cardOneTitle, Toast.LENGTH_SHORT);
         //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
