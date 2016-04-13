@@ -575,6 +575,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         // Set up a listener whenever a key changes
         //settings.getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         //updatePreference("loyaltyCardOneNamePref");
@@ -599,6 +600,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        finish();
+        Bundle temp_bundle = new Bundle();
+        onSaveInstanceState(temp_bundle);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("bundle", temp_bundle);
+        startActivity(intent);
+    }
 
 
 
@@ -804,6 +815,7 @@ public class MainActivity extends AppCompatActivity {
             //sn.show();
 
             if(sTagNum == null && sNum != null) {
+                checkFlag();
                 prefs.edit().putString("nfctagsn", sNum).apply();
                 sTagNum = prefs.getString("nfctagsn", sNum);
                 Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), "Tag Now Registered", Toast.LENGTH_SHORT);
@@ -812,6 +824,10 @@ public class MainActivity extends AppCompatActivity {
                 logoTitleName = (TextView)findViewById(R.id.logo_text);
                 cardOneTitle = (settings.getString("loyaltyCardOneNamePref", "Loyalty Card"));
                 logoTitleName.setText(cardOneTitle);
+                //onRestart();
+                //finish();
+                //startActivity(getIntent());
+                //startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
 
 
@@ -838,6 +854,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), "Incorrect Tag", Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
+
             }
 
             //Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), myTagId, Toast.LENGTH_SHORT);
@@ -1032,28 +1049,38 @@ public class MainActivity extends AppCompatActivity {
         mStar8ImageView.setImageResource(R.drawable.star);
         mStar9ImageView.setImageResource(R.drawable.star);
 
-        s1flag = false;
-        s2flag = false;
-        s3flag = false;
-        s4flag = false;
-        s5flag = false;
-        s6flag = false;
-        s7flag = false;
-        s8flag = false;
-        s9flag = false;
+        //Set all the Stars to False
+        //s1flag = false;
+        //s2flag = false;
+        //s3flag = false;
+        //s4flag = false;
+        //s5flag = false;
+        //s6flag = false;
+        //s7flag = false;
+        //s8flag = false;
+        //s9flag = false;
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putBoolean("s1selected", false).apply();
-        prefs.edit().putBoolean("s2selected", false).apply();
-        prefs.edit().putBoolean("s3selected", false).apply();
-        prefs.edit().putBoolean("s4selected", false).apply();
-        prefs.edit().putBoolean("s5selected", false).apply();
-        prefs.edit().putBoolean("s6selected", false).apply();
-        prefs.edit().putBoolean("s7selected", false).apply();
-        prefs.edit().putBoolean("s8selected", false).apply();
-        prefs.edit().putBoolean("s9selected", false).apply();
+        prefs.edit().putBoolean("s1selected", false).clear().apply();
+        prefs.edit().putBoolean("s2selected", false).clear().apply();
+        prefs.edit().putBoolean("s3selected", false).clear().apply();
+        prefs.edit().putBoolean("s4selected", false).clear().apply();
+        prefs.edit().putBoolean("s5selected", false).clear().apply();
+        prefs.edit().putBoolean("s6selected", false).clear().apply();
+        prefs.edit().putBoolean("s7selected", false).clear().apply();
+        prefs.edit().putBoolean("s8selected", false).clear().apply();
+        prefs.edit().putBoolean("s9selected", false).clear().apply();
 
+        //Clear the currently register Tag
         sTagNum = prefs.getString("nfctagsn", null);
         prefs.edit().putString("nfctagsn", null).apply();
+        sNum = null;
+        myTagId = null;
+
+        //Clear the Current Card Name.
+        //SharedPreferences.Editor editor = settings.edit();
+        settings.edit().putString("loyaltyCardOneNamePref", "Loyalty Card").clear().apply();
+        //editor.clear();
+        //editor.apply();
     }
 
 
@@ -1082,6 +1109,8 @@ public class MainActivity extends AppCompatActivity {
         setIntent(intent);
         resolveIntent(intent);
     }
+
+
 
     /*
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
