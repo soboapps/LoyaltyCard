@@ -19,12 +19,21 @@ Todo list
 * Allow multiple card accounts
 	Store each NFC Tag with a Company Name
 		Currently a card name can be set, but this is only for 1 registered Tag.
+		
+Store Owner,  Program NFC tag with Store Name
 
+<img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120416.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120855.png">		
 
-<img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-114027.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-114055.png">
+What the Customer would see
+
+<img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-121400.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-121536.png">
 
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-113535.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-113453.png">
 
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-114126.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-114206.png">
 
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-113520.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-113552.png">
+
+Store Owner,  Program NFC tag with Store Name
+
+<img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120416.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120855.png">
