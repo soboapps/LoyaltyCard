@@ -33,20 +33,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.soboapps.loyaltycard.CardSettings"
+            android:screenOrientation="portrait"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/card_settings" />
+        <activity
+            android:name="com.soboapps.loyaltycard.AboutActivity"
+            android:screenOrientation="portrait"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/aboutus" />
+        <activity
             android:name="com.soboapps.loyaltycard.LocationsActivity"
             android:screenOrientation="portrait"
             android:finishOnTaskLaunch="true"
             android:label="@string/storelocation" />
         <activity
-            android:name="com.soboapps.loyaltycard.CardSettings"
-            android:screenOrientation="portrait"
-            android:finishOnTaskLaunch="true"
-            android:label="Card Settings" />
-        <activity
             android:name="com.soboapps.loyaltycard.MagicAppRestart"
             android:screenOrientation="portrait"
-            android:finishOnTaskLaunch="true"
-            android:label="Card Settings" />
+            android:finishOnTaskLaunch="true" />
     </application>
 
 </manifest>

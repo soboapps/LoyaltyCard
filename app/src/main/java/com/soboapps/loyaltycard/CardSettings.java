@@ -32,6 +32,7 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     Preference reset;
     PreferenceCategory n;
 
+    public String mLogoTitle;
     EditTextPreference cardNamePref;
     //EditTextPreference cn;
 
@@ -47,7 +48,7 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
     private AlertDialog mDialog;
 
-    public String mLogoTitle;
+
 
 
     @Override

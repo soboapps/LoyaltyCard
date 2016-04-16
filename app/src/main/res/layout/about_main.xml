@@ -25,7 +25,7 @@
             android:id="@+id/locations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/storeabout"
+            android:text="@string/aboutus"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_below="@+id/imageView2"
             android:layout_centerHorizontal="true"
@@ -76,6 +76,17 @@
             android:paddingBottom="10dp" />
 
         <TextView
+            android:id="@+id/www"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/store1hours"
+            android:textSize="15dp"
+            android:layout_below="@+id/Store1F"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="10dp" />
+
+        <TextView
             android:id="@+id/sobo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,6 +95,7 @@
             android:textStyle="bold"
             android:textColorLink="#0502ff"
             android:layout_below="@+id/www" />
+
         <TextView
             android:id="@+id/app_ver"
             android:layout_below="@+id/sobo"

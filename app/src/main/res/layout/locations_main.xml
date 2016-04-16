@@ -83,7 +83,7 @@
             android:textSize="8dp"
             android:textStyle="bold"
             android:textColorLink="#0502ff"
-            android:layout_below="@+id/www" />
+            android:layout_below="@+id/store1H" />
         <TextView
             android:id="@+id/app_ver"
             android:layout_below="@+id/sobo"

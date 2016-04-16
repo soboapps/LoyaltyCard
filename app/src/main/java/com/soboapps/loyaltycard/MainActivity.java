@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     public static String mySTagUrl;
     //public static String sPayload;
     public static String cardOneTitle;
+    public static TextView logoTitleName;
 
 
     public static ImageView mStar1ImageView;
@@ -96,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
     public static boolean s9flag = false;
 
     public static String sNum;
-    public static String sTagNum;
+    public static String sTagNum = null;
 
-    public static TextView logoTitleName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -438,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
     private void addDrawerItems() {
         String [] menuList = getResources().getStringArray(R.array.menu_Array);
         menuAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuList);
+        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.setAdapter(menuAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -453,6 +455,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CardSettings.class));
             }
         });
+
     }
 
     private void setupDrawer() {
@@ -461,7 +464,7 @@ public class MainActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.storeabout);
+                getSupportActionBar().setTitle(R.string.mainmenu);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -821,9 +824,15 @@ public class MainActivity extends AppCompatActivity {
                 Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), "Tag Now Registered", Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
+
                 logoTitleName = (TextView)findViewById(R.id.logo_text);
-                cardOneTitle = (settings.getString("loyaltyCardOneNamePref", "Loyalty Card"));
+                cardOneTitle = (settings.getString("loyaltyCardOneNamePref", myTagId));
                 logoTitleName.setText(cardOneTitle);
+
+                SharedPreferences.Editor prefsEditor = settings.edit();
+                prefsEditor.putString("loyaltyCardOneNamePref", myTagId);
+                prefsEditor.apply();
+
                 //onRestart();
                 //finish();
                 //startActivity(getIntent());
