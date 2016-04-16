@@ -20,7 +20,7 @@ Store Owner - Program NFC tag with your Store Name Write another - Write another
 
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120416.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120855.png">		
 
-Customer would install the application and Tap the NFC tag.  The Store Name will automaticvally be displayed
+Customer would install the app and Tap the NFC tag.  The Store Name will automatically be displayed
 
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-121400.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-113453.png">
 
