@@ -442,12 +442,12 @@ public class MainActivity extends AppCompatActivity {
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.setAdapter(menuAdapter);
 
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-            }
-        });
+        //mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //    @Override
+        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //        startActivity(new Intent(MainActivity.this, AboutActivity.class));
+        //    }
+        //});
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -833,7 +833,7 @@ public class MainActivity extends AppCompatActivity {
                 prefsEditor.putString("loyaltyCardOneNamePref", myTagId);
                 prefsEditor.apply();
 
-                //onRestart();
+                onRestart();
                 //finish();
                 //startActivity(getIntent());
                 //startActivity(new Intent(getApplicationContext(), MainActivity.class));

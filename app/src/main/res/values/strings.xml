@@ -23,7 +23,7 @@
     <string-array
         name="menu_Array">
         <item>Settings</item>
-        <item>About Us</item>
+        <!-- <item>About Us</item> -->
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
