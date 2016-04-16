@@ -34,4 +34,4 @@ Todo list
 * Change cards to Fragments. I think this is what is needed to have multiple accounts.
 * Allow multiple card accounts
 	Store each NFC Tag with a Company Name
-		Currently the Card Name is pulled from the Te4xt Filed on th TAG and can be set manually, but this is only for 1 Tag.
+		Currently the Card Name is pulled from the Text Field on th TAG and can be set manually, but this is only for 1 Tag.
