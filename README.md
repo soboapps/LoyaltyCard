@@ -15,7 +15,7 @@ You could use a Coffee cup, Sandwich, Ice Cream Cone, Car Washes, Oil Change, Mu
 Anyone want to make iOS version :-)
 
 
-Store Owner - Program NFC tag with your Store Name Write another - Write another TAG that has a link to the App on Google Play.
+Store Owner - Program NFC tag with your Store Name - It would be best to write another TAG that has a link to the App on Google Play as well to make it easy for your customers.
 
 
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120416.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120855.png">		
