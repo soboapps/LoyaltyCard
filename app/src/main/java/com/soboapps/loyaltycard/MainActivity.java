@@ -1,5 +1,6 @@
 package com.soboapps.loyaltycard;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -21,6 +23,7 @@ import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static String sNum;
     public static String sTagNum = null;
-
+    public static String nfcTagSerialNum;
 
 
     @Override
@@ -641,6 +644,20 @@ public class MainActivity extends AppCompatActivity {
                 || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
             Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             NdefMessage[] msgs;
+
+            Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            byte[] extraID = tagFromIntent.getId();
+
+            StringBuilder sb = new StringBuilder();
+            for (byte b : extraID) {
+                sb.append(String.format("%02X", b));
+            };
+
+            nfcTagSerialNum = sb.toString();
+            Log.e("nfc ID", nfcTagSerialNum);
+
+            String name;
+
             if (rawMsgs != null) {
                 msgs = new NdefMessage[rawMsgs.length];
                 for (int i = 0; i < rawMsgs.length; i++) {
@@ -655,12 +672,17 @@ public class MainActivity extends AppCompatActivity {
                 NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
                 NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
                 msgs = new NdefMessage[] { msg };
+
+
+
             }
+
             // Setup the views
             buildTagViews(msgs);
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private String dumpTagData(Parcelable p) {
         StringBuilder sb = new StringBuilder();
         Tag tag = (Tag) p;
@@ -669,10 +691,14 @@ public class MainActivity extends AppCompatActivity {
         sb.append("Tag ID (dec): ").append(getDec(id)).append("\n");
         sb.append("ID (reversed): ").append(getReversed(id)).append("\n");
 
-        //sNum = null;
-        //sNum = new String(tag.getId());
 
-        //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), "sNum:" + sNum, Toast.LENGTH_SHORT);
+        //nfcTagSerialNum = id;
+
+        //nfcTagSerialNum = new String(sb.append("ID (reversed): ").append(getReversed(id)).append("\n"));
+        //sNum = null;
+        //nfcTagSerialNum = new String(tag.getId());
+
+        //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), "sNum1:" + nfcTagSerialNum, Toast.LENGTH_SHORT);
         //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
         //sn.show();
 
@@ -738,6 +764,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 sb.append("Mifare Ultralight type: ");
                 sb.append(type);
+
             }
         }
 
@@ -753,12 +780,18 @@ public class MainActivity extends AppCompatActivity {
 
             sb.append(Integer.toHexString(b));
 
+
+
+
+
             if (i > 0) {
                 sb.append(" ");
             }
 
 
+
         }
+
         return sb.toString();
     }
 
@@ -783,6 +816,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+
         return result;
     }
 
@@ -810,8 +844,23 @@ public class MainActivity extends AppCompatActivity {
             TextView myTagView =  (TextView)findViewById(R.id.text);
             myTagId = myTagView.getText().toString();
 
-            sNum = myTagId;
+            sNum = myTagId + nfcTagSerialNum;
+
+
+
+
             //sNum = new String(tag.getId());
+
+            //StringBuilder sb = new StringBuilder();
+            //Tag tag = (Tag) p;
+            //byte[] id = tag.getId();
+
+            //if (msgs == null){
+            //    nfcTagSerialNum = new String("Hi Steve");
+            //} else {
+                //nfcTagSerialNum = new String(String.valueOf(record));;
+
+            //}
 
             //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), "sNum:" + sNum, Toast.LENGTH_SHORT);
             //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -834,10 +883,8 @@ public class MainActivity extends AppCompatActivity {
                 prefsEditor.apply();
 
                 onRestart();
-                //finish();
-                //startActivity(getIntent());
-                //startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
+
 
 
             if (sNum == null && sTagNum == null) {
@@ -872,6 +919,10 @@ public class MainActivity extends AppCompatActivity {
 
             //mySTagUrl = getString(R.string.stag_url);
             mySTagUrl = sNum;
+
+            //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), "sNum:" + sTagNum, Toast.LENGTH_SHORT);
+            //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+            //sn.show();
 
 
             //PunchCard
