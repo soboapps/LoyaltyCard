@@ -4,6 +4,7 @@ NFC Loyalty Card for Android
 Only 2 things needed for a Digital Loyalty Card...  An Android Phone and an NFC Tag (Very Cheap, you can get 20 (NTAG213) for $20.00 on Amazon) You can download a Free NFC Tag Writer like NFC Tools (https://play.google.com/store/apps/details?id=com.wakdev.wdnfc) and write the text to the tag.  No expensive hardware or Internet based tracking software required.  You can't get any closer to an actual Punch Card than this.
 
 As a Store Owner you would program a Tag with your Store Name.  If you change the tag, all users will need to reset the app to clear the currently paired Tag.
+Here is a quick video that demonstates how to Write an NFC Tag, They are showing how to Write a URL to the tag, but doing Text is the same concept.  https://www.youtube.com/watch?v=DtzMie4U8RM FYI, this is not my video.
 
 As a User, you would download the App and Tap the Tag to register it with the app and get your first Credit.
 
