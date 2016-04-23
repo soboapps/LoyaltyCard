@@ -18,6 +18,7 @@ Anyone want to make iOS version :-)
 Store Owner - Program NFC tag with your Store Name - It would be best to write another TAG that has a link to the App on Google Play as well to make it easy for your customers.
 
 
+
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120416.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-16-120855.png">		
 
 Customer would install the app and Tap the NFC tag.  The Store Name will automatically be displayed
