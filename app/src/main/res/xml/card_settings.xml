@@ -14,6 +14,7 @@
                 android:id="@+id/logotext"
                 android:title="Card Name"
                  android:dialogTitle="Enter a Title for your Loyalty Card"
+                 android:summary="Card Name"
                 android:defaultValue="Loyalty Card"
                 android:selectAllOnFocus="true"
                 android:maxLength="25"

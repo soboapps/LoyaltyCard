@@ -31,9 +31,12 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     //Preference cn;
     Preference reset;
     PreferenceCategory n;
+    PreferenceCategory sn;
 
     public String mLogoTitle;
     EditTextPreference cardNamePref;
+    String cardNamePrefSummary;
+    String cardNameSummary;
     //EditTextPreference cn;
 
     ImageView mStar1ImageView;
@@ -70,8 +73,10 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
         prefs = this.getSharedPreferences("com.soboapps.punchcard", Context.MODE_PRIVATE);
 
 
-
         cardNamePref = (EditTextPreference)findPreference("loyaltyCardOneNamePref");
+        cardNamePrefSummary = prefs.getString("c", cardNameSummary);
+        cardNamePref.setSummary(cardNamePrefSummary);
+        //cardNamePref.setSummary(prefs.getString("loyaltyCardOneNamePref", "Serial Number:  " + MainActivity.sNum));
 
         mLogoTitle = String.valueOf(cardNamePref);
 
@@ -83,6 +88,9 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
 
         n = (PreferenceCategory)findPreference("NamePref");
+
+
+
 
         mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
 
@@ -204,6 +212,7 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
         updatePreference("loyaltyCardOneNamePref");
+        updatePreference("c");
     }
 
     @Override
@@ -227,7 +236,8 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
             if (preference instanceof EditTextPreference){
                 EditTextPreference editTextPreference =  (EditTextPreference)preference;
                 if (editTextPreference.getText().trim().length() > 0){
-                    editTextPreference.setSummary("Current Name:  " + editTextPreference.getText());
+                    editTextPreference.setTitle(editTextPreference.getText());
+                    editTextPreference.setSummary(cardNamePrefSummary);
                 }else{
                     editTextPreference.setSummary("Enter Current Name");
                 }

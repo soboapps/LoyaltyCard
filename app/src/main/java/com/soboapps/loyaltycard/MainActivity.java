@@ -68,10 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog mDialog;
 
     public static String myTagId;
-    public static String myCTagUrl;
-    //public static String mySTagId;
     public static String mySTagUrl;
-    //public static String sPayload;
     public static String cardOneTitle;
     public static TextView logoTitleName;
 
@@ -107,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.tag_viewer);
         setContentView(R.layout.activity_main);
         mTagContent = (LinearLayout) findViewById(R.id.list);
         resolveIntent(getIntent());
@@ -144,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = this.getSharedPreferences("com.soboapps.punchcard", Context.MODE_PRIVATE);
 
-        sTagNum = prefs.getString("nfctagsn", null);
+        sTagNum = prefs.getString("c", null);
 
         settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
@@ -820,6 +816,7 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
+
     void buildTagViews(NdefMessage[] msgs) {
         if (msgs == null || msgs.length == 0) {
             return;
@@ -844,8 +841,7 @@ public class MainActivity extends AppCompatActivity {
             TextView myTagView =  (TextView)findViewById(R.id.text);
             myTagId = myTagView.getText().toString();
 
-            sNum = myTagId + nfcTagSerialNum;
-
+            sNum = nfcTagSerialNum + ":" + myTagId;
 
 
 
@@ -868,8 +864,8 @@ public class MainActivity extends AppCompatActivity {
 
             if(sTagNum == null && sNum != null) {
                 checkFlag();
-                prefs.edit().putString("nfctagsn", sNum).apply();
-                sTagNum = prefs.getString("nfctagsn", sNum);
+                prefs.edit().putString("c", sNum).apply();
+                sTagNum = prefs.getString("c", sNum);
                 Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), "Tag Now Registered", Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
