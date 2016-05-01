@@ -866,7 +866,7 @@ public class MainActivity extends AppCompatActivity {
                 checkFlag();
                 prefs.edit().putString("c", sNum).apply();
                 sTagNum = prefs.getString("c", sNum);
-                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), "Tag Now Registered", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), myTagId + " is Now Registered", Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
 
