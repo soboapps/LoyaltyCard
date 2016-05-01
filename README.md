@@ -30,6 +30,10 @@ Customer would install the app and Tap the NFC tag.  The Store Name will automat
 
 <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-113520.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2016-04-09-113552.png">
 
+<img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-2.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-3.png">
+
+<img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-4.png">  <img src="http://www.soboapps.com/wp-content/uploads/2015/05/device-5.png">
+
 
 Todo list
 
