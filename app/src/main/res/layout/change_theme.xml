@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Set Theme"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <ImageButton
+        android:id="@+id/imageButton0"
+        android:layout_width="230dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/default_button" />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="230dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04"
+        android:background="@drawable/icecream_button" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="230dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04"
+        android:background="@drawable/coffee_button" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="230dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04"
+        android:background="@drawable/smoothie_button" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="230dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04"
+        android:background="@drawable/sandwich_button" />
+
+
+</LinearLayout>

@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menuAbout"
+        android:id="@+id/menuTheme"
         android:alphabeticShortcut="a"
         android:icon="@drawable/ic_locaion"
-        android:showAsAction="always"
-        android:title="@string/storelocation" />
+
+        android:title="Theme" />
 </menu>

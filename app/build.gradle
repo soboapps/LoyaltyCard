@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.soboapps.punchcard"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1002
         versionName "1.002"
@@ -20,8 +20,8 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
     compile files('libs/guavalib.jar')
 }

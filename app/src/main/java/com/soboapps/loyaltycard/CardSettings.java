@@ -13,8 +13,10 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,12 +32,15 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
     //Preference cn;
     Preference reset;
+    Preference t;
     PreferenceCategory n;
     PreferenceCategory sn;
 
     public String mLogoTitle;
     EditTextPreference cardNamePref;
     String cardNamePrefSummary;
+    String themeNamePref;
+    String themeName;
     String cardNameSummary;
     //EditTextPreference cn;
 
@@ -49,14 +54,33 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     ImageView mStar8ImageView;
     ImageView mStar9ImageView;
 
+    ImageButton mChangeTheme;
+
     private AlertDialog mDialog;
 
-
+    public static SharedPreferences settings;
+    public static String themePref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get the Current theme that is set
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = (settings.getString("theme", "defaultTheme"));
+        if (themePref.equals("defaultTheme")) {
+            setTheme(R.style.AppTheme);
+        } else if (themePref.equals("icecreamTheme")) {
+            setTheme(R.style.AppIceCreamTheme);
+        } else if (themePref.equals("coffeeTheme")) {
+            setTheme(R.style.AppCoffeeTheme);
+        } else if (themePref.equals("smoothieTheme")) {
+            setTheme(R.style.AppSmoothieTheme);
+        } else if (themePref.equals("sandwichTheme")) {
+            setTheme(R.style.AppSandwichTheme);
+        } else if (themePref.equals("carTheme")) {
+            setTheme(R.style.AppCarTheme);
+        }
         addPreferencesFromResource(R.xml.card_settings);
 
         mStar1ImageView = (ImageView) findViewById(R.id.img_star_1);
@@ -75,10 +99,12 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
         cardNamePref = (EditTextPreference)findPreference("loyaltyCardOneNamePref");
         cardNamePrefSummary = prefs.getString("c", cardNameSummary);
+        themeNamePref = prefs.getString("themePref", themeNamePref);
         cardNamePref.setSummary(cardNamePrefSummary);
         //cardNamePref.setSummary(prefs.getString("loyaltyCardOneNamePref", "Serial Number:  " + MainActivity.sNum));
 
         mLogoTitle = String.valueOf(cardNamePref);
+        themeName = String.valueOf(themeNamePref);
 
         //cn  = (EditTextPreference)findPreference("loyaltyCardOneNamePref");
         reset = findPreference("resetPrefs");
@@ -88,6 +114,7 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
 
         n = (PreferenceCategory)findPreference("NamePref");
+        t = findPreference("ThemePref");
 
 
 
@@ -163,7 +190,9 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
                 return true;
             }
-        });
+    });
+
+
 
     }
 

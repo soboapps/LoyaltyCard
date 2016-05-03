@@ -1,20 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2D85F0</color>
-    <color name="colorPrimaryDark">#246dc6</color>
-    <color name="colorAccent">#212E67</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="colorAccentDark">#1976D2</color>
+    <color name="colorSecondary">#1976D2</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#727272</color>
+    <color name="colorIcons">#FFFFFF</color>
+    <color name="colorDivider">#B6B6B6</color>
 
-    <color name="secondary">#1c78e7</color>
-    <color name="secondaryDark">#246dc6</color>
-    <color name="primary">#2D85F0</color>
-    <color name="primaryDark">#246dc6</color>
-    <color name="ternary">#ffffff</color>
-    <color name="accent">#212E67</color>
+    <color name="colorIceCreamPrimary">#E91E63</color>
+    <color name="colorIceCreamPrimaryDark">#C2185B</color>
+    <color name="colorIceCreamAccent">#795548</color>
+    <color name="colorIceCreamAccentDark">#F8BBD0</color>
+    <color name="colorIceCreamSecondary">#F8BBD0</color>
+    <color name="colorIceCreamWhite">#ffffff</color>
+    <color name="colorIceCreamPrimaryText">#212121</color>
+    <color name="colorIceCreamSecondaryText">#727272</color>
+    <color name="colorIceCreamIcons">#FFFFFF</color>
+    <color name="colorIceCreamDivider">#B6B6B6</color>
 
-    <color name="primaryText">#ffffff</color>
-    <color name="secondaryText">#FFFFFF</color>
+    <color name="colorCoffeePrimary">#795548</color>
+    <color name="colorCoffeePrimaryDark">#5D4037</color>
+    <color name="colorCoffeeAccent">#FF5722</color>
+    <color name="colorCoffeeSecondary">#D7CCC8</color>
+    <color name="colorCoffeeWhite">#ffffff</color>
+    <color name="colorCoffeePrimaryText">#212121</color>
+    <color name="colorCoffeeSecondaryText">#727272</color>
+    <color name="colorCoffeeIcons">#FFFFFF</color>
+    <color name="colorCoffeeDivider">#B6B6B6</color>
 
-    <color name="drawer_header_bg">@color/secondary</color>
-    <color name="drawer_item_text_default">#867b7b</color>
-    <color name="drawer_item_text_checked">@color/primary</color>
+    <color name="colorSandwichPrimary">#4CAF50</color>
+    <color name="colorSandwichPrimaryDark">#388E3C</color>
+    <color name="colorSandwichAccent">#FFC107</color>
+    <color name="colorSandwichSecondary">#C8E6C9</color>
+    <color name="colorSandwichWhite">#ffffff</color>
+    <color name="colorSandwichPrimaryText">#212121</color>
+    <color name="colorSandwichSecondaryText">#727272</color>
+    <color name="colorSandwichIcons">#FFFFFF</color>
+    <color name="colorSandwichDivider">#B6B6B6</color>
+
+    <color name="colorHairCutPrimary">#673AB7</color>
+    <color name="colorHairCutPrimaryDark">#512DA8</color>
+    <color name="colorHairCutAccent">#9E9E9E</color>
+    <color name="colorHairCutSecondary">#D1C4E9</color>
+    <color name="colorHairCutWhite">#ffffff</color>
+    <color name="colorHairCutPrimaryText">#212121</color>
+    <color name="colorHairCutSecondaryText">#727272</color>
+    <color name="colorHairCutIcons">#FFFFFF</color>
+    <color name="colorHairCutDivider">#B6B6B6</color>
+
+    <color name="colorSmoothiePrimary">#F44336</color>
+    <color name="colorSmoothiePrimaryDark">#D32F2F</color>
+    <color name="colorSmoothieAccent">#FFC107</color>
+    <color name="colorSmoothieSecondary">#FFCDD2</color>
+    <color name="colorSmoothieWhite">#ffffff</color>
+    <color name="colorSmoothiePrimaryText">#212121</color>
+    <color name="colorSmoothieSecondaryText">#727272</color>
+    <color name="colorSmoothieIcons">#FFFFFF</color>
+    <color name="colorSmoothieDivider">#B6B6B6</color>
+
+    <color name="colorCarPrimary">#3F51B5</color>
+    <color name="colorCarPrimaryDark">#303F9F</color>
+    <color name="colorCarAccent">#607D8B</color>
+    <color name="colorCarSecondary">#C5CAE9</color>
+    <color name="colorCarWhite">#ffffff</color>
+    <color name="colorCarPrimaryText">#212121</color>
+    <color name="colorCarSecondaryText">#727272</color>
+    <color name="colorCarIcons">#FFFFFF</color>
+    <color name="colorCarDivider">#B6B6B6</color>
+
 </resources>

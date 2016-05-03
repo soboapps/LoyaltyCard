@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.soboapps.loyaltycard">
 
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="23" />
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-feature android:name="android.hardware.nfc" />
@@ -36,6 +36,7 @@
             android:name="com.soboapps.loyaltycard.CardSettings"
             android:screenOrientation="portrait"
             android:finishOnTaskLaunch="true"
+            android:launchMode="singleInstance"
             android:label="@string/card_settings" />
         <activity
             android:name="com.soboapps.loyaltycard.AboutActivity"
@@ -50,6 +51,11 @@
         <activity
             android:name="com.soboapps.loyaltycard.MagicAppRestart"
             android:screenOrientation="portrait"
+            android:finishOnTaskLaunch="true" />
+        <activity
+            android:name="com.soboapps.loyaltycard.ChangeThemeActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:finishOnTaskLaunch="true" />
     </application>
 
