@@ -1,8 +1,6 @@
 package com.soboapps.loyaltycard;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -78,8 +76,8 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
             setTheme(R.style.AppSmoothieTheme);
         } else if (themePref.equals("sandwichTheme")) {
             setTheme(R.style.AppSandwichTheme);
-        } else if (themePref.equals("carTheme")) {
-            setTheme(R.style.AppCarTheme);
+        } else if (themePref.equals("muffinTheme")) {
+            setTheme(R.style.AppMuffinTheme);
         }
         addPreferencesFromResource(R.xml.card_settings);
 
@@ -150,8 +148,10 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
                                     t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                                     t.show();
 
-                                    MainActivity.resetView();
-
+                                    //MainActivity.resetCard();
+                                    //reloadCard();
+                                    Intent intent = new Intent("finish_activity");
+                                    sendBroadcast(intent);
 
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -194,6 +194,8 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
 
 
+
+
     }
 
     public void restart(){
@@ -204,18 +206,13 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
         }
     }
 
-    public void restartActivity(){
+        public void restartActivity(){
         MagicAppRestart.doRestart(this);
     }
 
-    public void reload() {
-        Intent mStartActivity = new Intent(this, MainActivity.class);
-        int mPendingIntentId = 123456;
-        PendingIntent mPendingIntent = PendingIntent.getActivity(this, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager mgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-
-        System.exit(0);
+    public void reloadCard() {
+        MainActivity activity = new MainActivity();
+        activity.resetCard();
     }
 
 

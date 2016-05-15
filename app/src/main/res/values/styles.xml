@@ -48,11 +48,11 @@
     </style>
 
     <!-- Car theme. -->
-    <style name="AppCarTheme" parent="@style/AppTheme">
+    <style name="AppMuffinTheme" parent="@style/AppTheme">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorCarPrimary</item>
-        <item name="colorPrimaryDark">@color/colorCarPrimaryDark</item>
-        <item name="colorAccent">@color/colorCarAccent</item>
+        <item name="colorPrimary">@color/colorMuffinPrimary</item>
+        <item name="colorPrimaryDark">@color/colorMuffinPrimaryDark</item>
+        <item name="colorAccent">@color/colorMuffinAccent</item>
 
     </style>
 

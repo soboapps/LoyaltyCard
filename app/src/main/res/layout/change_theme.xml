@@ -8,49 +8,74 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Set Theme"
+        android:text="Set a Theme"
         android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.04" />
+        android:layout_gravity="center_horizontal" />
 
-    <ImageButton
-        android:id="@+id/imageButton0"
-        android:layout_width="230dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/default_button" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/spacerView"
+        android:layout_gravity="center_horizontal" />
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="230dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.04"
-        android:background="@drawable/icecream_button" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="230dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.04"
-        android:background="@drawable/coffee_button" />
+        <ImageButton
+            android:id="@+id/imageButton0"
+            android:layout_width="125dp"
+            android:layout_height="222dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/default_button" />
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="230dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.04"
-        android:background="@drawable/smoothie_button" />
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="125dp"
+            android:layout_height="222dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ice_cream_button" />
 
-    <ImageButton
-        android:id="@+id/imageButton4"
-        android:layout_width="230dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.04"
-        android:background="@drawable/sandwich_button" />
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="125dp"
+            android:layout_height="222dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/coffee_button" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="125dp"
+            android:layout_height="222dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/smoothie_button" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="125dp"
+            android:layout_height="222dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/sandwich_button" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="125dp"
+            android:layout_height="222dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/muffin_button" />
+
+    </LinearLayout>
 
 </LinearLayout>

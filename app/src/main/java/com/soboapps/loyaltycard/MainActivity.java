@@ -2,11 +2,12 @@ package com.soboapps.loyaltycard;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -23,6 +24,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,7 +53,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //private final MainActivity mMainActivity= new MainActivity();
     //private final LocationsActivity mLocationsActivity = new LocationsActivity();
@@ -123,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
             setTheme(R.style.AppSmoothieTheme);
         } else if (themePref.equals("sandwichTheme")) {
             setTheme(R.style.AppSandwichTheme);
-        } else if (themePref.equals("carTheme")) {
-            setTheme(R.style.AppCarTheme);
+        } else if (themePref.equals("muffinTheme")) {
+            setTheme(R.style.AppMuffinTheme);
         }
 
         setContentView(R.layout.activity_main);
@@ -170,11 +173,11 @@ public class MainActivity extends AppCompatActivity {
             shape.setColor(Color.parseColor("#4CAF50"));
             shape.setStroke(15, Color.parseColor("#FFC107"));
             shape.invalidateSelf();
-        } else if (themePref.equals("carTheme")) {
-            mainRlayout.setBackgroundColor(Color.parseColor("#C5CAE9"));
+        } else if (themePref.equals("muffinTheme")) {
+            mainRlayout.setBackgroundColor(Color.parseColor("#D7CCC8"));
             GradientDrawable shape = (GradientDrawable) vLogo.getBackground().mutate();
-            shape.setColor(Color.parseColor("#B6B6B6"));
-            shape.setStroke(15, Color.parseColor("#212121"));
+            shape.setColor(Color.parseColor("#795548"));
+            shape.setStroke(15, Color.parseColor("#512DA8"));
             shape.invalidateSelf();
         }
 
@@ -185,16 +188,21 @@ public class MainActivity extends AppCompatActivity {
         mTagContent = (LinearLayout) findViewById(R.id.list);
         resolveIntent(getIntent());
 
-        mDrawerList = (ListView)findViewById(R.id.navList);
+        //mDrawerList = (ListView)findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //displayView(R.id.card_one);
+
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
         LayoutInflater inflater = getLayoutInflater();
         View listHeaderView = inflater.inflate(R.layout.header_list,null, false);
-        mDrawerList.addHeaderView(listHeaderView);
+        //mDrawerList.addHeaderView(listHeaderView);
 
-        addDrawerItems();
-        setupDrawer();
+        //addDrawerItems();
+        //setupDrawer();
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -260,19 +268,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar1ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar1ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar1ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar1ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar1ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s1flag = false;
                                     prefs.edit().putBoolean("s1selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -298,19 +297,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar2ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar2ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar2ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar2ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar2ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s2flag = false;
                                     prefs.edit().putBoolean("s2selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -336,19 +326,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar3ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar3ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar3ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar3ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar3ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s3flag = false;
                                     prefs.edit().putBoolean("s3selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -374,19 +355,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar4ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar4ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar4ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar4ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar4ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s4flag = false;
                                     prefs.edit().putBoolean("s4selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -412,19 +384,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar5ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar5ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar5ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar5ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar5ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s5flag = false;
                                     prefs.edit().putBoolean("s5selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -450,19 +413,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar6ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar6ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar6ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar6ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar6ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s6flag = false;
                                     prefs.edit().putBoolean("s6selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -488,19 +442,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar7ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar7ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar7ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar7ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar7ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s7flag = false;
                                     prefs.edit().putBoolean("s7selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -526,19 +471,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar8ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar8ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar8ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar8ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar8ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s8flag = false;
                                     prefs.edit().putBoolean("s8selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -564,19 +500,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    if (themePref.equals("defaultTheme")) {
-                                        mStar9ImageView.setImageResource(R.drawable.star);
-                                    } else if (themePref.equals("icecreamTheme")) {
-                                        mStar9ImageView.setImageResource(R.drawable.icecream);
-                                    } else if (themePref.equals("coffeeTheme")) {
-                                        mStar9ImageView.setImageResource(R.drawable.coffee);
-                                    } else if (themePref.equals("smoothieTheme")) {
-                                        mStar9ImageView.setImageResource(R.drawable.smoothie);
-                                    } else if (themePref.equals("sandwichTheme")) {
-                                        mStar9ImageView.setImageResource(R.drawable.sandwich);
-                                    }
                                     s9flag = false;
                                     prefs.edit().putBoolean("s9selected", false).apply();
+                                    checkFlag();
+                                    onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //TODO No button clicked
@@ -598,24 +525,73 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void displayView(int viewId) {
+
+        String title = getString(R.string.app_name);
+
+        switch (viewId) {
+            case R.id.theme:
+                Intent a = new Intent(MainActivity.this, ChangeThemeActivity.class);
+                startActivity(a);
+                title  = "uKoo";
+                break;
+            case R.id.settings:
+                //ActionBar bar = this.getActionBar();
+                Intent b = new Intent(MainActivity.this, CardSettings.class);
+                registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
+                startActivity(b);
+                title = "Settings";
+                break;
+            //case R.id.about:
+            //Intent a = new Intent(MainActivity.this, AboutActivity.class);
+            //startActivity(a);
+            //    title = "About";
+            //    break;
+
+        }
+
+        // set the toolbar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+    }
+
     private void addDrawerItems() {
         String [] menuList = getResources().getStringArray(R.array.menu_Array);
         menuAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuList);
+
+
+        LayoutInflater inflater = getLayoutInflater();
+        //menuAdapter = inflater.inflate(this, R.layout.drawer_listview_item, menuList);
+        View view = inflater.inflate(R.layout.drawer_listview_item,null, false);
+        ImageView iv = (ImageView)view.findViewById(R.id.rowIcon);
+
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.setAdapter(menuAdapter);
+        //mDrawerList.setAdapter(view);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 switch(position) {
-                    case 1:
-                        Intent a = new Intent(MainActivity.this, CardSettings.class);
+                    case 0:
+
+                        Intent a = new Intent(MainActivity.this, AboutActivity.class);
                         startActivity(a);
                         break;
-                    case 2:
+                    case 1:
                         Intent b = new Intent(MainActivity.this, ChangeThemeActivity.class);
                         startActivity(b);
+                        break;
+                    case 2:
+                        Intent c = new Intent(MainActivity.this, CardSettings.class);
+                        registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
+                        startActivity(c);
                         break;
                     default:
                 }
@@ -667,11 +643,12 @@ public class MainActivity extends AppCompatActivity {
         mDialog.show();
     }
 
-    public void checkFlag(){
+    public static void checkFlag(){
         //Check Star punch
         if(s1flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.star_punch);
+                //mStar1ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -680,9 +657,12 @@ public class MainActivity extends AppCompatActivity {
                 mStar1ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar1ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
+                //mStar1ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 mStar1ImageView.setImageResource(R.drawable.star);
             } else if (themePref.equals("icecreamTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.icecream);
@@ -692,12 +672,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar1ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar1ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s2flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.star_punch);
+                //mStar2ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -706,10 +689,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar2ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar2ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.star);
+                //mStar2ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -718,12 +704,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar2ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar2ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s3flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.star_punch);
+                //mStar3ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -732,10 +721,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar3ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar3ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.star);
+                //mStar3ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -744,12 +736,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar3ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar3ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s4flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.star_punch);
+                //mStar4ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -758,10 +753,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar4ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar4ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.star);
+                //mStar4ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -770,12 +768,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar4ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar4ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s5flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.star_punch);
+                //mStar5ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -784,10 +785,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar5ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar5ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.star);
+                //mStar5ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -796,12 +800,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar5ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar5ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s6flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.star_punch);
+                //mStar6ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -810,10 +817,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar6ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar6ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.star);
+                //mStar6ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -822,12 +832,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar6ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar6ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s7flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.star_punch);
+                //mStar7ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -836,10 +849,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar7ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar7ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.star);
+                //mStar7ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -848,12 +864,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar7ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar7ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s8flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.star_punch);
+                //mStar8ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -862,10 +881,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar8ImageView.setImageResource(R.drawable.smoothie_punch);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.sandwich_punch);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar8ImageView.setImageResource(R.drawable.muffin_punch);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.star);
+                //mStar8ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -874,12 +896,15 @@ public class MainActivity extends AppCompatActivity {
                 mStar8ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar8ImageView.setImageResource(R.drawable.muffin);
             }
         }
 
         if(s9flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.star_punch_free);
+                //mStar9ImageView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.icecream_punch_free);
             } else if (themePref.equals("coffeeTheme")) {
@@ -888,10 +913,13 @@ public class MainActivity extends AppCompatActivity {
                 mStar9ImageView.setImageResource(R.drawable.smoothie_punch_free);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.sandwich_punch_free);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar9ImageView.setImageResource(R.drawable.muffin_punch_free);
             }
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.star);
+                //mStar9ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -900,6 +928,8 @@ public class MainActivity extends AppCompatActivity {
                 mStar9ImageView.setImageResource(R.drawable.smoothie);
             } else if (themePref.equals("sandwichTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.sandwich);
+            } else if (themePref.equals("muffinTheme")) {
+                mStar9ImageView.setImageResource(R.drawable.muffin);
             }
         }
     }
@@ -957,6 +987,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    BroadcastReceiver broadcast_reciever = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("finish_activity")) {
+                finish();
+                // DO WHATEVER YOU WANT.
+            }
+        }
+    };
 
 
     private void showWirelessSettingsDialog() {
@@ -1134,7 +1175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void buildTagViews(NdefMessage[] msgs) {
+    public void buildTagViews(NdefMessage[] msgs) {
         if (msgs == null || msgs.length == 0) {
             return;
         }
@@ -1212,23 +1253,14 @@ public class MainActivity extends AppCompatActivity {
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
-                    resetView();
+                    resetImages();
 
                     return;
 
                 } else if ((sNum != null && s1flag == false) && mySTagUrl.equals(sTagNum.toString())) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar1ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar1ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar1ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar1ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar1ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
+
                     s1flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s1selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1240,19 +1272,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s1flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s2flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar2ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar2ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar2ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar2ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar2ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
 
                     s2flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s2selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1264,19 +1286,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s2flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s3flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar3ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar3ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar3ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar3ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar3ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
 
                     s3flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s3selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1288,19 +1300,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s3flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s4flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar4ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar4ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar4ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar4ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar4ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
 
                     s4flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s4selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1312,19 +1314,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s4flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s5flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar5ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar5ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar5ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar5ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar5ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
 
                     s5flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s5selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1336,19 +1328,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s5flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s6flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar6ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar6ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar6ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar6ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar6ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
 
                     s6flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s6selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1360,19 +1342,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s6flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s7flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar7ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar7ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar7ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar7ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar7ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
 
                     s7flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s7selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1384,19 +1356,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s7flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s8flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar8ImageView.setImageResource(R.drawable.star_punch);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar8ImageView.setImageResource(R.drawable.icecream_punch);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar8ImageView.setImageResource(R.drawable.coffee_punch);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar8ImageView.setImageResource(R.drawable.smoothie_punch);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar8ImageView.setImageResource(R.drawable.sandwich_punch);
-                    }
 
                     s8flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s8selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "Thank You!\n" +
@@ -1408,19 +1370,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 } else if ((sNum != null && s8flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s9flag == false))) {
-                    if (themePref.equals("defaultTheme")) {
-                        mStar9ImageView.setImageResource(R.drawable.star_punch_free);
-                    } else if (themePref.equals("icecreamTheme")) {
-                        mStar9ImageView.setImageResource(R.drawable.icecream_punch_free);
-                    } else if (themePref.equals("coffeeTheme")) {
-                        mStar9ImageView.setImageResource(R.drawable.coffee_punch_free);
-                    } else if (themePref.equals("smoothieTheme")) {
-                        mStar9ImageView.setImageResource(R.drawable.smoothie_punch_free);
-                    } else if (themePref.equals("sandwichTheme")) {
-                        mStar9ImageView.setImageResource(R.drawable.sandwich_punch_free);
-                    }
 
                     s9flag = true;
+                    checkFlag();
                     prefs.edit().putBoolean("s9selected", true).apply();
 
                     Toast toast = Toast.makeText(this, "CONGRATULATION!\n" +
@@ -1435,169 +1387,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void punchCard(){
-        if (themePref.equals("defaultTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.star_punch);
-            mStar2ImageView.setImageResource(R.drawable.star_punch);
-            mStar3ImageView.setImageResource(R.drawable.star_punch);
-            mStar4ImageView.setImageResource(R.drawable.star_punch);
-            mStar5ImageView.setImageResource(R.drawable.star_punch);
-            mStar6ImageView.setImageResource(R.drawable.star_punch);
-            mStar7ImageView.setImageResource(R.drawable.star_punch);
-            mStar8ImageView.setImageResource(R.drawable.star_punch);
-            mStar9ImageView.setImageResource(R.drawable.star_punch);
-        } else if (themePref.equals("icecreamTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar2ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar3ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar4ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar5ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar6ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar7ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar8ImageView.setImageResource(R.drawable.icecream_punch);
-            mStar9ImageView.setImageResource(R.drawable.icecream_punch);
-        } else if (themePref.equals("coffeeTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar2ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar3ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar4ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar5ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar6ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar7ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar8ImageView.setImageResource(R.drawable.coffee_punch);
-            mStar9ImageView.setImageResource(R.drawable.coffee_punch);
-        } else if (themePref.equals("smoothieTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar2ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar3ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar4ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar5ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar6ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar7ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar8ImageView.setImageResource(R.drawable.smoothie_punch);
-            mStar9ImageView.setImageResource(R.drawable.smoothie_punch);
-        } else if (themePref.equals("sandwichTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar2ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar3ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar4ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar5ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar6ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar7ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar8ImageView.setImageResource(R.drawable.sandwich_punch);
-            mStar9ImageView.setImageResource(R.drawable.sandwich_punch);
-        }
-    }
-
-    public static void clearPunch(){
-        if (themePref.equals("defaultTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.star);
-            mStar2ImageView.setImageResource(R.drawable.star);
-            mStar3ImageView.setImageResource(R.drawable.star);
-            mStar4ImageView.setImageResource(R.drawable.star);
-            mStar5ImageView.setImageResource(R.drawable.star);
-            mStar6ImageView.setImageResource(R.drawable.star);
-            mStar7ImageView.setImageResource(R.drawable.star);
-            mStar8ImageView.setImageResource(R.drawable.star);
-            mStar9ImageView.setImageResource(R.drawable.star);
-        } else if (themePref.equals("icecreamTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.icecream);
-            mStar2ImageView.setImageResource(R.drawable.icecream);
-            mStar3ImageView.setImageResource(R.drawable.icecream);
-            mStar4ImageView.setImageResource(R.drawable.icecream);
-            mStar5ImageView.setImageResource(R.drawable.icecream);
-            mStar6ImageView.setImageResource(R.drawable.icecream);
-            mStar7ImageView.setImageResource(R.drawable.icecream);
-            mStar8ImageView.setImageResource(R.drawable.icecream);
-            mStar9ImageView.setImageResource(R.drawable.icecream);
-        } else if (themePref.equals("coffeeTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.coffee);
-            mStar2ImageView.setImageResource(R.drawable.coffee);
-            mStar3ImageView.setImageResource(R.drawable.coffee);
-            mStar4ImageView.setImageResource(R.drawable.coffee);
-            mStar5ImageView.setImageResource(R.drawable.coffee);
-            mStar6ImageView.setImageResource(R.drawable.coffee);
-            mStar7ImageView.setImageResource(R.drawable.coffee);
-            mStar8ImageView.setImageResource(R.drawable.coffee);
-            mStar9ImageView.setImageResource(R.drawable.coffee);
-        } else if (themePref.equals("smoothieTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.smoothie);
-            mStar2ImageView.setImageResource(R.drawable.smoothie);
-            mStar3ImageView.setImageResource(R.drawable.smoothie);
-            mStar4ImageView.setImageResource(R.drawable.smoothie);
-            mStar5ImageView.setImageResource(R.drawable.smoothie);
-            mStar6ImageView.setImageResource(R.drawable.smoothie);
-            mStar7ImageView.setImageResource(R.drawable.smoothie);
-            mStar8ImageView.setImageResource(R.drawable.smoothie);
-            mStar9ImageView.setImageResource(R.drawable.smoothie);
-        } else if (themePref.equals("sandwichTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.sandwich);
-            mStar2ImageView.setImageResource(R.drawable.sandwich);
-            mStar3ImageView.setImageResource(R.drawable.sandwich);
-            mStar4ImageView.setImageResource(R.drawable.sandwich);
-            mStar5ImageView.setImageResource(R.drawable.sandwich);
-            mStar6ImageView.setImageResource(R.drawable.sandwich);
-            mStar7ImageView.setImageResource(R.drawable.sandwich);
-            mStar8ImageView.setImageResource(R.drawable.sandwich);
-            mStar9ImageView.setImageResource(R.drawable.sandwich);
-        }
-    }
-
-
-    public static void resetView(){
-
-        //Reset all the images
-        if (themePref.equals("defaultTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.star);
-            mStar2ImageView.setImageResource(R.drawable.star);
-            mStar3ImageView.setImageResource(R.drawable.star);
-            mStar4ImageView.setImageResource(R.drawable.star);
-            mStar5ImageView.setImageResource(R.drawable.star);
-            mStar6ImageView.setImageResource(R.drawable.star);
-            mStar7ImageView.setImageResource(R.drawable.star);
-            mStar8ImageView.setImageResource(R.drawable.star);
-            mStar9ImageView.setImageResource(R.drawable.star);
-        } else if (themePref.equals("icecreamTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.icecream);
-            mStar2ImageView.setImageResource(R.drawable.icecream);
-            mStar3ImageView.setImageResource(R.drawable.icecream);
-            mStar4ImageView.setImageResource(R.drawable.icecream);
-            mStar5ImageView.setImageResource(R.drawable.icecream);
-            mStar6ImageView.setImageResource(R.drawable.icecream);
-            mStar7ImageView.setImageResource(R.drawable.icecream);
-            mStar8ImageView.setImageResource(R.drawable.icecream);
-            mStar9ImageView.setImageResource(R.drawable.icecream);
-        } else if (themePref.equals("coffeeTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.coffee);
-            mStar2ImageView.setImageResource(R.drawable.coffee);
-            mStar3ImageView.setImageResource(R.drawable.coffee);
-            mStar4ImageView.setImageResource(R.drawable.coffee);
-            mStar5ImageView.setImageResource(R.drawable.coffee);
-            mStar6ImageView.setImageResource(R.drawable.coffee);
-            mStar7ImageView.setImageResource(R.drawable.coffee);
-            mStar8ImageView.setImageResource(R.drawable.coffee);
-            mStar9ImageView.setImageResource(R.drawable.coffee);
-        } else if (themePref.equals("smoothieTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.smoothie);
-            mStar2ImageView.setImageResource(R.drawable.smoothie);
-            mStar3ImageView.setImageResource(R.drawable.smoothie);
-            mStar4ImageView.setImageResource(R.drawable.smoothie);
-            mStar5ImageView.setImageResource(R.drawable.smoothie);
-            mStar6ImageView.setImageResource(R.drawable.smoothie);
-            mStar7ImageView.setImageResource(R.drawable.smoothie);
-            mStar8ImageView.setImageResource(R.drawable.smoothie);
-            mStar9ImageView.setImageResource(R.drawable.smoothie);
-        } else if (themePref.equals("sandwichTheme")) {
-            mStar1ImageView.setImageResource(R.drawable.sandwich);
-            mStar2ImageView.setImageResource(R.drawable.sandwich);
-            mStar3ImageView.setImageResource(R.drawable.sandwich);
-            mStar4ImageView.setImageResource(R.drawable.sandwich);
-            mStar5ImageView.setImageResource(R.drawable.sandwich);
-            mStar6ImageView.setImageResource(R.drawable.sandwich);
-            mStar7ImageView.setImageResource(R.drawable.sandwich);
-            mStar8ImageView.setImageResource(R.drawable.sandwich);
-            mStar9ImageView.setImageResource(R.drawable.sandwich);
-        }
+    public void resetCard(){
 
         //Set all the Stars to False
         prefs.edit().putBoolean("s1selected", false).clear().apply();
@@ -1610,6 +1400,8 @@ public class MainActivity extends AppCompatActivity {
         prefs.edit().putBoolean("s8selected", false).clear().apply();
         prefs.edit().putBoolean("s9selected", false).clear().apply();
 
+        checkFlag();
+
         //Clear the currently register Tag
         sTagNum = prefs.getString("nfctagsn", null);
         prefs.edit().putString("nfctagsn", null).apply();
@@ -1618,29 +1410,27 @@ public class MainActivity extends AppCompatActivity {
 
         //Clear the Current Card Name.
         settings.edit().putString("loyaltyCardOneNamePref", "Loyalty Card").clear().apply();
+        finish();
+
     }
 
+    public void resetImages(){
 
-    public void displayView(int viewId) {
+        //Set all the Stars to False
+        prefs.edit().putBoolean("s1selected", false).apply();
+        prefs.edit().putBoolean("s2selected", false).apply();
+        prefs.edit().putBoolean("s3selected", false).apply();
+        prefs.edit().putBoolean("s4selected", false).apply();
+        prefs.edit().putBoolean("s5selected", false).apply();
+        prefs.edit().putBoolean("s6selected", false).apply();
+        prefs.edit().putBoolean("s7selected", false).apply();
+        prefs.edit().putBoolean("s8selected", false).apply();
+        prefs.edit().putBoolean("s9selected", false).apply();
 
-        Fragment fragment = null;
-        String title = getString(R.string.app_name);
+        checkFlag();
 
-        switch (viewId) {
-            case R.id.card_one:
-                //fragment = new CardSettings();
-                title = "uKoo";
-                break;
-            //case R.id.nav_manage:
-            //    fragment = new CardSettings();
-            //    title = "Settings";
-            //    break;
-            //case R.id.nav_about:
-            //    fragment = new AboutFragment();
-            //    title = "About";
-            //    break;
+        onRestart();
 
-        }
     }
 
    // @Override

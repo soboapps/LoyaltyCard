@@ -22,7 +22,7 @@ public class ChangeThemeActivity extends Activity implements OnClickListener {
     public static String coffeeTheme;
     public static String smoothieTheme;
     public static String sandwichTheme;
-    //public static String carTheme;
+    public static String muffinTheme;
 
     MainActivity mainActivity;
 
@@ -42,7 +42,7 @@ public class ChangeThemeActivity extends Activity implements OnClickListener {
         findViewById(R.id.imageButton2).setOnClickListener(this);
         findViewById(R.id.imageButton3).setOnClickListener(this);
         findViewById(R.id.imageButton4).setOnClickListener(this);
-        //findViewById(R.id.imageButton5).setOnClickListener(this);
+        findViewById(R.id.imageButton5).setOnClickListener(this);
     }
     @Override
     public void onClick(View v)
@@ -106,6 +106,15 @@ public class ChangeThemeActivity extends Activity implements OnClickListener {
             case R.id.imageButton4:
                 Utils.changeToTheme(this, Utils.THEME_SANDWICH);
                 settings.edit().putString("theme", "sandwichTheme").apply();
+                startActivity(new Intent(this, MainActivity.class));
+                //i=new Intent(this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                finish();
+                break;
+            case R.id.imageButton5:
+                Utils.changeToTheme(this, Utils.THEME_MUFFIN);
+                settings.edit().putString("theme", "muffinTheme").apply();
                 startActivity(new Intent(this, MainActivity.class));
                 //i=new Intent(this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

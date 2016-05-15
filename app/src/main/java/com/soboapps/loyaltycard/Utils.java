@@ -9,14 +9,14 @@ public class Utils {
     public final static int THEME_COFFEE = 2;
     public final static int THEME_SMOOTHIE = 3;
     public final static int THEME_SANDWICH = 4;
-    public final static int THEME_CAR = 5;
+    public final static int THEME_MUFFIN = 5;
 
     public static String defaultTheme;
     public static String icecreamTheme;
     public static String coffeeTheme;
     public static String smoothieTheme;
     public static String sandwichTheme;
-    public static String carTheme;
+    public static String muffinTheme;
 
     public MainActivity activity;
     /**
@@ -56,11 +56,13 @@ public class Utils {
                 activity.setTheme(R.style.AppSandwichTheme);
                 //prefs.edit().putString("theme", sandwichTheme).apply();
                 break;
-            case THEME_CAR:
-                activity.setTheme(R.style.AppCarTheme);
+            case THEME_MUFFIN:
+                activity.setTheme(R.style.AppMuffinTheme);
 
                 //prefs.edit().putString("theme", carTheme).apply();
                 break;
         }
     }
+
+
 }

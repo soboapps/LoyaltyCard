@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">uKoo</string>
-    <string name="app_title">uKoo</string>
+    <string name="app_name">My uKoo</string>
+    <string name="app_title">My uKoo</string>
     <string name="app_menu_title">Loyalty Rewards</string>
-    <string name="app_version">Version 1.008</string>
+    <string name="app_version">Version 1.004</string>
     <string name="soboappsurl">http://www.soboapps.com</string>
     <string name="intro_message"></string>
     <string name="error">Error</string>
@@ -23,8 +23,8 @@
 
     <string-array
         name="menu_Array">
-        <item>Settings</item>
         <item>Theme</item>
+        <item>Settings</item>
         <!-- <item>About Us</item> -->
     </string-array>
 

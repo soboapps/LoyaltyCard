@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.soboapps.loyaltycard">
 
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="23" />
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-feature android:name="android.hardware.nfc" />

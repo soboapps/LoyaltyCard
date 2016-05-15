@@ -19,7 +19,7 @@
             android:id="@+id/imageView2"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_nav_header" />
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/locations"
@@ -34,59 +34,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/store1A"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/store1street"
-            android:textSize="15dp"
-            android:layout_below="@+id/locations"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:autoLink = "map"/>
-        <TextView
-            android:id="@+id/Store1P"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/store1phone"
-            android:textSize="15dp"
-            android:layout_below="@+id/store1A"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_centerHorizontal="true"
-            android:autoLink = "phone" />
-        <TextView
-            android:id="@+id/Store1F"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/store1fax"
-            android:textSize="15dp"
-            android:layout_below="@+id/Store1P"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_centerHorizontal="true" />
-        <TextView
-            android:id="@+id/store1H"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/store1hours"
-            android:textSize="15dp"
-            android:layout_below="@+id/Store1F"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="10dp" />
-
-        <TextView
-            android:id="@+id/www"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/store1hours"
-            android:textSize="15dp"
-            android:layout_below="@+id/Store1F"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="10dp" />
-
-        <TextView
             android:id="@+id/sobo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,7 +41,7 @@
             android:textSize="8dp"
             android:textStyle="bold"
             android:textColorLink="#0502ff"
-            android:layout_below="@+id/www" />
+            android:layout_below="@+id/locations" />
 
         <TextView
             android:id="@+id/app_ver"

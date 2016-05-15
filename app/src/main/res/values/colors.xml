@@ -62,14 +62,14 @@
     <color name="colorSmoothieIcons">#FFFFFF</color>
     <color name="colorSmoothieDivider">#B6B6B6</color>
 
-    <color name="colorCarPrimary">#3F51B5</color>
-    <color name="colorCarPrimaryDark">#303F9F</color>
-    <color name="colorCarAccent">#607D8B</color>
-    <color name="colorCarSecondary">#C5CAE9</color>
-    <color name="colorCarWhite">#ffffff</color>
-    <color name="colorCarPrimaryText">#212121</color>
-    <color name="colorCarSecondaryText">#727272</color>
-    <color name="colorCarIcons">#FFFFFF</color>
-    <color name="colorCarDivider">#B6B6B6</color>
+    <color name="colorMuffinPrimary">#795548</color>
+    <color name="colorMuffinPrimaryDark">#5D4037</color>
+    <color name="colorMuffinAccent">#512DA8</color>
+    <color name="colorMuffinSecondary">#D7CCC8</color>
+    <color name="colorMuffinWhite">#ffffff</color>
+    <color name="colorMuffinPrimaryText">#212121</color>
+    <color name="colorMuffinSecondaryText">#727272</color>
+    <color name="colorMuffinIcons">#FFFFFF</color>
+    <color name="colorMuffinDivider">#B6B6B6</color>
 
 </resources>

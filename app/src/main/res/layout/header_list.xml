@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_width="280dp"
+    android:layout_height="100dp"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    android:background="@color/colorAccent">
+    android:background="@drawable/title_background">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -12,7 +12,8 @@
         android:id="@+id/imageView"
         android:src="@mipmap/ic_launcher"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,10 +21,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/app_title"
         android:id="@+id/textView2"
+        android:paddingLeft="10dp"
         android:layout_alignParentTop="false"
-        android:layout_toEndOf="@+id/imageView"
         android:layout_alignParentBottom="true"
-         />
-
+        android:textColor="@color/abc_primary_text_material_dark" />
 
 </RelativeLayout>
