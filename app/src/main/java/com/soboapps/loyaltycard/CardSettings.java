@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -14,13 +13,9 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-/**
- * Created by sdmei on 3/31/2016.
- */
 public class CardSettings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private boolean cardPrefChanged = true;
@@ -28,7 +23,6 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     public static final String TAG = "tag";
     public static SharedPreferences prefs;
 
-    //Preference cn;
     Preference reset;
     Preference t;
     PreferenceCategory n;
@@ -40,7 +34,6 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     String themeNamePref;
     String themeName;
     String cardNameSummary;
-    //EditTextPreference cn;
 
     ImageView mStar1ImageView;
     ImageView mStar2ImageView;
@@ -51,8 +44,6 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     ImageView mStar7ImageView;
     ImageView mStar8ImageView;
     ImageView mStar9ImageView;
-
-    ImageButton mChangeTheme;
 
     private AlertDialog mDialog;
 
@@ -91,83 +82,61 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
         mStar8ImageView = (ImageView) findViewById(R.id.img_star_8);
         mStar9ImageView = (ImageView) findViewById(R.id.img_star_9);
 
-        //prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs = this.getSharedPreferences("com.soboapps.punchcard", Context.MODE_PRIVATE);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
 
 
         cardNamePref = (EditTextPreference)findPreference("loyaltyCardOneNamePref");
         cardNamePrefSummary = prefs.getString("c", cardNameSummary);
         themeNamePref = prefs.getString("themePref", themeNamePref);
         cardNamePref.setSummary(cardNamePrefSummary);
-        //cardNamePref.setSummary(prefs.getString("loyaltyCardOneNamePref", "Serial Number:  " + MainActivity.sNum));
 
         mLogoTitle = String.valueOf(cardNamePref);
         themeName = String.valueOf(themeNamePref);
+        cardNamePref.setText(prefs.getString("loyaltyCardOneNamePref", "My uKoo"));
 
-        //cn  = (EditTextPreference)findPreference("loyaltyCardOneNamePref");
         reset = findPreference("resetPrefs");
-
-        //cn.setText(prefs.getString("loyaltyCardOneNamePref", "Loyalty Card"));
-
-
 
         n = (PreferenceCategory)findPreference("NamePref");
         t = findPreference("ThemePref");
 
-
-
-
-        mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
-
-        //cn.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
-        //    @Override
-        //    public boolean onPreferenceClick(Preference preference) {
-        //        //startActivity(new Intent(Options.this, PlayerSetup.class));
-        //        return true;
-        //    }
-        //});
-
-        //sTagNum = prefs.getString("nfctagsn", null);
-
-        //s1flag = prefs.getBoolean("s1selected", false);
-        // Reset All the Options back to Default
+        mDialog = new AlertDialog.Builder(this).setNeutralButton(getString(R.string.ok), null).create();
         reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                //prefs = getPreferenceManager().getSharedPreferences();
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
+                                    //Reset all of the Preferences
                                     SharedPreferences.Editor editor = prefs.edit();
                                     editor.clear();
                                     editor.apply();
-                                    Toast t = Toast.makeText(CardSettings.this.getApplicationContext(), "Loyalty Card Has Been Reset", Toast.LENGTH_SHORT);
+                                    SharedPreferences.Editor editor2 = settings.edit();
+                                    editor2.clear();
+                                    editor2.apply();
+
+                                    Toast t = Toast.makeText(CardSettings.this.getApplicationContext(), getString(R.string.card_rest), Toast.LENGTH_SHORT);
                                     t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                                     t.show();
 
-                                    //MainActivity.resetCard();
-                                    //reloadCard();
                                     Intent intent = new Intent("finish_activity");
                                     sendBroadcast(intent);
 
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
+                                    //Don't do anything, they said No, just close the Dialog Box
                                     dialog.dismiss();
                                     break;
                             }
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(CardSettings.this);
-                    builder.setMessage("Clear All Credits and Start Over?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.clear_all))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
-                //reload();
-                //restartActivity();
 
                 return false;
             }
@@ -180,41 +149,13 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
                                               Object newValue) {
 
                 SharedPreferences.Editor prefsEditor = prefs.edit();
-                prefsEditor.putString(mLogoTitle, "Loyalty Card");
+                prefsEditor.putString(mLogoTitle, "My uKoo");
                 prefsEditor.apply();
-
-                //numOfPlayers = Integer.valueOf((String) newValue);
-
-                //enablePrefs();
-                //setUpListeners(true);
 
                 return true;
             }
     });
-
-
-
-
-
     }
-
-    public void restart(){
-        Intent intent = new Intent(this, MainActivity.class);
-        this.startActivity(intent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            this.finishAffinity();
-        }
-    }
-
-        public void restartActivity(){
-        MagicAppRestart.doRestart(this);
-    }
-
-    public void reloadCard() {
-        MainActivity activity = new MainActivity();
-        activity.resetCard();
-    }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -227,8 +168,6 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //if(shaker != null)
-        //  shaker.close();
     }
 
     @Override
@@ -265,7 +204,7 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
                     editTextPreference.setTitle(editTextPreference.getText());
                     editTextPreference.setSummary(cardNamePrefSummary);
                 }else{
-                    editTextPreference.setSummary("Enter Current Name");
+                    editTextPreference.setSummary(getString(R.string.no_card));
                 }
             }
         }

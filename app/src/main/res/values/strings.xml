@@ -1,25 +1,48 @@
 <resources>
     <string name="app_name">My uKoo</string>
     <string name="app_title">My uKoo</string>
-    <string name="app_menu_title">Loyalty Rewards</string>
-    <string name="app_version">Version 1.004</string>
+    <string name="ukoo">uKoo</string>
+    <string name="app_menu_title">My uKoo Rewards</string>
+    <string name="app_version">Version 1.005</string>
     <string name="soboappsurl">http://www.soboapps.com</string>
-    <string name="intro_message"></string>
+    <string name="intro_message">Welcome to My uKoo</string>
     <string name="error">Error</string>
+    <string name="settings">Settings</string>
     <string name="no_nfc">Sorry, This Device Doesn\'t Support NFC</string>
     <string name="nfc_disabled">NFC is not enabled. Please go to the wireless settings to enable it.</string>
     <string name="menu_main_clear_title">Clear all</string>
     <string name="stag_url">360220573958</string>
     <string name="storeurl">http://www.somewebsite.com</string>
     <string name="storelocation">Our Locations</string>
-    <string name="card_settings">Card Settings</string>
     <string name="aboutus">About Us</string>
+    <string name="about">About</string>
     <string name="mainmenu">Main Menu</string>
     <string name="store1street">1212 Some Street NW\nWashington, DC 20001</string>
     <string name="store1phone">Phone: (555)555-1212</string>
     <string name="store1fax">Fax: (555)555-1213</string>
     <string name="store1hours">Hours: Mon - Fri, 6:30am - 4:00pm</string>
-    <string name="rules">One stamp for each purchase.\nNot valid in conjuction with any other coupons, offers, or discounts.\n</string>
+    <string name="rules">One stamp for each purchase.\n Not valid in conjuction with any other coupons, offers, or discounts.\n</string>
+    <string name="is_registered"> is Now Registered</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">no</string>
+    <string name="nfc_message">Message from NFC Reader :-)</string>
+    <string name="remove_credit">Remove the Credit?</string>
+    <string name="something_wrong">Something is Wrong</string>
+    <string name="incorrect_tag">Incorrect Tag</string>
+    <string name="you_redeemed">You Redeemed Your Free\n Item, Thank You\n For Your Patronage!</string>
+    <string name="thankyou">Thank You!\n You Earned </string>
+    <string name="credit">Credit\n Towards a Free Item</string>
+    <string name="congrats">CONGRATULATION!\n Your Next\n Item is on US!</string>
+    <string name="card_settings">Card Settings</string>
+    <string name="card_rest">My uKoo Loyalty Card\n Has Been Reset!</string>
+    <string name="clear_all">Clear ALL Credits and Start Over?</string>
+    <string name="no_card">No Card Registered</string>
+    <string name="card_name">Card Name</string>
+    <string name="reuse_card">Reuse Card?</string>
+    <string name="clear_settings">Clear Card Settings</string>
+    <string name="set_theme">Set a Theme</string>
+
 
     <string-array
         name="menu_Array">

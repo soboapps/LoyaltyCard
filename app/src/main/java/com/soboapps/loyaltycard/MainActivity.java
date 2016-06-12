@@ -35,11 +35,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,14 +52,8 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    //private final MainActivity mMainActivity= new MainActivity();
-    //private final LocationsActivity mLocationsActivity = new LocationsActivity();
-
-    private ListView mDrawerList;
-    private ArrayAdapter<String> menuAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String mActivityTitle;
 
     private static final DateFormat TIME_FORMAT = SimpleDateFormat.getDateTimeInstance();
     private LinearLayout mTagContent;
@@ -80,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static TextView logoTitleName;
     public static String themePref;
 
-
     public static ImageView mStar1ImageView;
     public static ImageView mStar2ImageView;
     public static ImageView mStar3ImageView;
@@ -92,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static ImageView mStar9ImageView;
 
     public static SharedPreferences prefs;
-    public static SharedPreferences settings;
 
     public static boolean s1flag = false;
     public static boolean s2flag = false;
@@ -112,10 +101,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         // Get the Current theme that is set
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = (settings.getString("theme", "defaultTheme"));
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = (prefs.getString("theme", "defaultTheme"));
         if (themePref.equals("defaultTheme")) {
             setTheme(R.style.AppTheme);
         } else if (themePref.equals("icecreamTheme")) {
@@ -146,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mStar9ImageView = (ImageView) findViewById(R.id.img_star_9);
 
         if (themePref.equals("defaultTheme")) {
-            //setTheme(R.style.AppTheme);
-
         } else if (themePref.equals("icecreamTheme")) {
             mainRlayout.setBackgroundColor(Color.parseColor("#F8BBD0"));
             GradientDrawable shape = (GradientDrawable) vLogo.getBackground().mutate();
@@ -181,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             shape.invalidateSelf();
         }
 
+        // This is used to test Logic and Flow - Remarked out when not debugging
         //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), themePref, Toast.LENGTH_SHORT);
         //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
         //sn.show();
@@ -188,32 +175,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mTagContent = (LinearLayout) findViewById(R.id.list);
         resolveIntent(getIntent());
 
-        //mDrawerList = (ListView)findViewById(R.id.nav_view);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //displayView(R.id.card_one);
-
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
-
-        LayoutInflater inflater = getLayoutInflater();
-        View listHeaderView = inflater.inflate(R.layout.header_list,null, false);
-        //mDrawerList.addHeaderView(listHeaderView);
-
-        //addDrawerItems();
-        //setupDrawer();
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        //ActionBar actionBar = getSupportActionBar();
-        //actionBar.setLogo(R.drawable.appbar);
-        //actionBar.setDisplayUseLogoEnabled(true);
-        //actionBar.setDisplayShowHomeEnabled(true);
+        registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
 
-        mDialog = new AlertDialog.Builder(this).setNeutralButton("Ok", null).create();
+        mDialog = new AlertDialog.Builder(this).setNeutralButton(getString(R.string.ok), null).create();
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mAdapter == null) {
@@ -225,23 +198,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         mNdefPushMessage = new NdefMessage(new NdefRecord[] { newTextRecord(
-                "Message from NFC Reader :-)", Locale.ENGLISH, true) });
+                getString(R.string.nfc_message), Locale.ENGLISH, true) });
 
         prefs = this.getSharedPreferences("com.soboapps.punchcard", Context.MODE_PRIVATE);
 
-        settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
         sTagNum = prefs.getString("c", null);
-
 
         Typeface tf = Typeface.createFromAsset(getAssets(),"rumraisin.ttf");
 
         logoTitleName = (TextView)findViewById(R.id.logo_text);
         logoTitleName.setTypeface(tf,Typeface.BOLD);
-        cardOneTitle = (settings.getString("loyaltyCardOneNamePref", "Loyalty Card"));
+        cardOneTitle = (prefs.getString("loyaltyCardOneNamePref", "My uKoo"));
         logoTitleName.setText(cardOneTitle);
 
-
+        // This is used to test Logic and Flow - Remarked out when not debugging
         //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), cardOneTitle, Toast.LENGTH_SHORT);
         //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
         //sn.show();
@@ -281,9 +251,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -310,9 +280,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -339,9 +309,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -368,9 +338,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -397,9 +367,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -426,9 +396,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -455,9 +425,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -484,9 +454,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
@@ -513,18 +483,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     };
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Remove the Credit?")
-                            .setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener)
+                    builder.setMessage(getString(R.string.remove_credit))
+                            .setPositiveButton(getString(R.string.yes), dialogClickListener)
+                            .setNegativeButton(getString(R.string.no), dialogClickListener)
                             .show();
                 }
                 return true;
             }
         });
-
-
     }
 
+    // The Pop-out menu
     public void displayView(int viewId) {
 
         String title = getString(R.string.app_name);
@@ -533,19 +502,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.theme:
                 Intent a = new Intent(MainActivity.this, ChangeThemeActivity.class);
                 startActivity(a);
-                title  = "uKoo";
+                title  = getString(R.string.app_name);
                 break;
             case R.id.settings:
                 //ActionBar bar = this.getActionBar();
                 Intent b = new Intent(MainActivity.this, CardSettings.class);
-                registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
                 startActivity(b);
-                title = "Settings";
+                title = getString(R.string.settings);
                 break;
+
             //case R.id.about:
             //Intent a = new Intent(MainActivity.this, AboutActivity.class);
             //startActivity(a);
-            //    title = "About";
+            //    title = getString(R.string.about);
             //    break;
 
         }
@@ -560,69 +529,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void addDrawerItems() {
-        String [] menuList = getResources().getStringArray(R.array.menu_Array);
-        menuAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuList);
-
-
-        LayoutInflater inflater = getLayoutInflater();
-        //menuAdapter = inflater.inflate(this, R.layout.drawer_listview_item, menuList);
-        View view = inflater.inflate(R.layout.drawer_listview_item,null, false);
-        ImageView iv = (ImageView)view.findViewById(R.id.rowIcon);
-
-        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        mDrawerList.setAdapter(menuAdapter);
-        //mDrawerList.setAdapter(view);
-
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                switch(position) {
-                    case 0:
-
-                        Intent a = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(a);
-                        break;
-                    case 1:
-                        Intent b = new Intent(MainActivity.this, ChangeThemeActivity.class);
-                        startActivity(b);
-                        break;
-                    case 2:
-                        Intent c = new Intent(MainActivity.this, CardSettings.class);
-                        registerReceiver(broadcast_reciever, new IntentFilter("finish_activity"));
-                        startActivity(c);
-                        break;
-                    default:
-                }
-            }
-        });
-
-    }
-
-    private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.mainmenu);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -636,7 +542,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-
     private void showMessage(int title, int message) {
         mDialog.setTitle(title);
         mDialog.setMessage(getText(message));
@@ -644,11 +549,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public static void checkFlag(){
-        //Check Star punch
+        //Check Star punch - Need to make sure images match the Theme
         if(s1flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.star_punch);
-                //mStar1ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -662,7 +566,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else {
             if (themePref.equals("defaultTheme")) {
-                //mStar1ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 mStar1ImageView.setImageResource(R.drawable.star);
             } else if (themePref.equals("icecreamTheme")) {
                 mStar1ImageView.setImageResource(R.drawable.icecream);
@@ -680,7 +583,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s2flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.star_punch);
-                //mStar2ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -695,7 +597,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.star);
-                //mStar2ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar2ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -712,7 +613,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s3flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.star_punch);
-                //mStar3ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -727,7 +627,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.star);
-                //mStar3ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar3ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -744,7 +643,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s4flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.star_punch);
-                //mStar4ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -759,7 +657,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.star);
-                //mStar4ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar4ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -776,7 +673,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s5flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.star_punch);
-                //mStar5ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -791,7 +687,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.star);
-                //mStar5ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar5ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -808,7 +703,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s6flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.star_punch);
-                //mStar6ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -823,7 +717,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.star);
-                //mStar6ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar6ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -840,7 +733,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s7flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.star_punch);
-                //mStar7ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -855,7 +747,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.star);
-                //mStar7ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar7ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -872,7 +763,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s8flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.star_punch);
-                //mStar8ImageView.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.icecream_punch);
             } else if (themePref.equals("coffeeTheme")) {
@@ -887,7 +777,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.star);
-                //mStar8ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar8ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -904,7 +793,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(s9flag) {
             if (themePref.equals("defaultTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.star_punch_free);
-                //mStar9ImageView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.icecream_punch_free);
             } else if (themePref.equals("coffeeTheme")) {
@@ -919,7 +807,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             if (themePref.equals("defaultTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.star);
-                //mStar9ImageView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             } else if (themePref.equals("icecreamTheme")) {
                 mStar9ImageView.setImageResource(R.drawable.icecream);
             } else if (themePref.equals("coffeeTheme")) {
@@ -994,7 +881,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String action = intent.getAction();
             if (action.equals("finish_activity")) {
                 finish();
-                // DO WHATEVER YOU WANT.
             }
         }
     };
@@ -1037,8 +923,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             nfcTagSerialNum = sb.toString();
             Log.e("nfc ID", nfcTagSerialNum);
 
-            String name;
-
             if (rawMsgs != null) {
                 msgs = new NdefMessage[rawMsgs.length];
                 for (int i = 0; i < rawMsgs.length; i++) {
@@ -1053,9 +937,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
                 NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
                 msgs = new NdefMessage[] { msg };
-
-
-
             }
 
             // Setup the views
@@ -1128,7 +1009,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         }
-
         return sb.toString();
     }
 
@@ -1144,9 +1024,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (i > 0) {
                 sb.append(" ");
             }
-
         }
-
         return sb.toString();
     }
 
@@ -1168,9 +1046,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             long value = bytes[i] & 0xffl;
             result += value * factor;
             factor *= 256l;
-
         }
-
         return result;
     }
 
@@ -1190,7 +1066,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         for (int i = 0; i < size; i++) {
             TextView timeView = new TextView(this);
             timeView.setText(TIME_FORMAT.format(now));
-            //content.addView(timeView, 0);
             ParsedNdefRecord record = records.get(i);
             content.addView(record.getView(this, inflater, content, i), 1 + i);
             content.addView(inflater.inflate(R.layout.tag_divider, content, false), 2 + i);
@@ -1205,50 +1080,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 checkFlag();
                 prefs.edit().putString("c", sNum).apply();
                 sTagNum = prefs.getString("c", sNum);
-                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), myTagId + " is Now Registered", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), myTagId + getString(R.string.is_registered), Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
 
                 logoTitleName = (TextView)findViewById(R.id.logo_text);
-                cardOneTitle = (settings.getString("loyaltyCardOneNamePref", myTagId));
+                cardOneTitle = (prefs.getString("loyaltyCardOneNamePref", myTagId));
                 logoTitleName.setText(cardOneTitle);
 
-                SharedPreferences.Editor prefsEditor = settings.edit();
+                SharedPreferences.Editor prefsEditor = prefs.edit();
                 prefsEditor.putString("loyaltyCardOneNamePref", myTagId);
                 prefsEditor.apply();
 
                 onRestart();
             }
 
-
-
             if (sNum == null && sTagNum == null) {
 
-                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), "Something is Wrong", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
 
             }
 
             if (sTagNum != null && !sTagNum.equals(sNum)) {
-                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), "Incorrect Tag", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), getString(R.string.incorrect_tag), Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
             }
 
             mySTagUrl = sNum;
 
+            // This is used to test Logic and Flow - Remark out when not debugging
             //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), "sNum:" + sTagNum, Toast.LENGTH_SHORT);
             //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
             //sn.show();
 
-
-            //PunchCard
+            //Clear the Card after Freebee
             if (sNum != null && sTagNum != null)
                 if ((s9flag == true) && mySTagUrl.equals(sTagNum.toString())) {
-                    Toast toast = Toast.makeText(this, "You Redeemed Your Free\n" +
-                            "Item, Thank You\n" +
-                            "For Your Patronage!", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.you_redeemed), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1257,15 +1128,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     return;
 
+                // Punch Card begins after Card Paired
                 } else if ((sNum != null && s1flag == false) && mySTagUrl.equals(sTagNum.toString())) {
 
                     s1flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s1selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You Earned 1 Credit\n" +
-                            "Towards a Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 1 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1276,10 +1145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s2flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s2selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You Have Earned 2 Credits\n" +
-                            "Towards a Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 2 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1290,10 +1156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s3flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s3selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You Have Earned 3 Credits\n" +
-                            "Towards a Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 3 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1304,10 +1167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s4flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s4selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You Have Earned 4 Credits\n" +
-                            "Towards a Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 4 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1318,10 +1178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s5flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s5selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You're Over Half Way to\n" +
-                            "Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 5 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1332,10 +1189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s6flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s6selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You Have Earned 6 Credits\n" +
-                            "Towards a Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 6 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1346,10 +1200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s7flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s7selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You Have Earned 7 Credits\n" +
-                            "Towards a Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 7 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1360,10 +1211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s8flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s8selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "Thank You!\n" +
-                            "You Have Earned 8 Credits\n" +
-                            "Towards a Free Item", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 8 " + getString(R.string.credit), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1374,10 +1222,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     s9flag = true;
                     checkFlag();
                     prefs.edit().putBoolean("s9selected", true).apply();
-
-                    Toast toast = Toast.makeText(this, "CONGRATULATION!\n" +
-                            "Your Next\n" +
-                            "Item is on US!", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(this, getString(R.string.congrats), Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -1387,6 +1232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // This is called from the CardSettings.class to reset the card
     public void resetCard(){
 
         //Set all the Stars to False
@@ -1409,11 +1255,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myTagId = null;
 
         //Clear the Current Card Name.
-        settings.edit().putString("loyaltyCardOneNamePref", "Loyalty Card").clear().apply();
+        prefs.edit().putString("loyaltyCardOneNamePref", "My uKoo").clear().apply();
         finish();
 
     }
 
+    // Clear Punches once Freebee is redeemed
     public void resetImages(){
 
         //Set all the Stars to False
@@ -1433,42 +1280,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-   // @Override
-   // public boolean onCreateOptionsMenu(Menu menu) {
-   //     // Inflate the menu; this adds items to the action bar if it is present.
-   //     getMenuInflater().inflate(R.menu.menu_main, menu);
-   //     return true;
-   // }
-
-   // @Override
-   // public boolean onOptionsItemSelected(MenuItem item) {
-   //     // Handle action bar item clicks here. The action bar will
-   //     // automatically handle clicks on the Home/Up button, so long
-   //     // as you specify a parent activity in AndroidManifest.xml.
-   //     switch(item.getItemId()){
-   //         case R.id.menuTheme:
-   //             startActivity(new Intent(MainActivity.this, ChangeThemeActivity.class));
-   //             //finish();
-   //             MainActivity.this.finish();
-   //             return true;
-   //     }
-
-   //     return super.onOptionsItemSelected(item);
-   //}
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         // Handle your other action bar items...
-
         return super.onOptionsItemSelected(item);
 
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-
     public boolean onNavigationItemSelected(MenuItem item) {
         displayView(item.getItemId());
         return true;
@@ -1481,7 +1303,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) < 5
@@ -1490,7 +1311,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.d("CDA", "onKeyDown Called");
             onBackPressed();
         }
-
         return super.onKeyDown(keyCode, event);
     }
 
@@ -1504,25 +1324,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return;
     }
 
-
-    /*
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        updatePreference(key);
-
-    }
-
-    private void updatePreference(String key) {
-        if (key.equals("loyaltyCardOneNamePref")){
-            //settings = findPreference(key);
-            if (settings instanceof EditTextPreference){
-                EditTextPreference editTextPreference =  (EditTextPreference)settings;
-                if (editTextPreference.getText().trim().length() > 0){
-                    editTextPreference.setSummary("Current Name:  " + editTextPreference.getText());
-                }else{
-                    editTextPreference.setSummary("Enter Current Name");
-                }
-            }
+    @Override
+    public void onDestroy() {
+        if(broadcast_reciever!=null) {
+            unregisterReceiver(broadcast_reciever);
         }
+        super.onDestroy();
     }
-    */
 }
