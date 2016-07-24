@@ -11,7 +11,7 @@ Here is a quick video that demonstates how to Write an NFC Tag, They are showing
 
 As a User, you would download the App and scan the QR Code or Tap the Tag to register it with the app and get your first Credit.
 
-Each Scann or Tap on the paired QR Code or NFC Tag earns 1 credit. Once the "FREE" item is redeemed, the card clears to start over.
+Each Scan or Tap on the paired QR Code or NFC Tag earns 1 credit. Once the "FREE" item is redeemed, the card clears to start over.
 
 Only 3 icons needed to customize for your store.  Not Punched, Punched and Punched Free.
 You could use a Coffee cup, Sandwich, Ice Cream Cone, Car Washes, Oil Change, Muffins, Haircut, ...  You get the idea; the possibilities are endless.
