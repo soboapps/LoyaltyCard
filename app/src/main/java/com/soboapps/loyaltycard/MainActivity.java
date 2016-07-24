@@ -249,8 +249,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         logoTitleName = (TextView)findViewById(R.id.logo_text);
         logoTitleName.setTypeface(tf,Typeface.BOLD);
         cardOneTitle = (prefs.getString("loyaltyCardOneNamePref", "My uKoo"));
-        logoTitleName.setText(cardOneTitle);
 
+        if (sTagNum == null){
+            logoTitleName.setText("My uKoo");
+        } else {
+            logoTitleName.setText(sTagNum);
+        }
         // This is used to test Logic and Flow - Remarked out when not debugging
         //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), cardOneTitle, Toast.LENGTH_SHORT);
         //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -561,10 +565,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-                qrCodeText = data.getStringExtra("qrcodevalue");
-                // Check to make sure it's the correct QR Code
+
                 sTagNum = prefs.getString("c", sNum);
-                if (qrCodeText.equals(sTagNum.toString())){
+                qrCodeText = data.getStringExtra("qrcodevalue");
+
+                if(sTagNum == null && qrCodeText != null) {
+                    checkFlag();
+                    prefs.edit().putString("c", qrCodeText).apply();
+                    sTagNum = prefs.getString("c", qrCodeText);
+                    Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), qrCodeText + " " + getString(R.string.is_registered), Toast.LENGTH_SHORT);
+                    t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+                    t.show();
+
+                    logoTitleName = (TextView)findViewById(R.id.logo_text);
+                    cardOneTitle = (prefs.getString("loyaltyCardOneNamePref", qrCodeText));
+                    if (sTagNum == null){
+                        logoTitleName.setText("My uKoo");
+                    } else {
+                        logoTitleName.setText(sTagNum);
+                    }
+
+                    SharedPreferences.Editor prefsEditor = prefs.edit();
+                    prefsEditor.putString("loyaltyCardOneNamePref", myTagId);
+                    prefsEditor.apply();
+
+                    onRestart();
+                    creditPurchase();
+                } else if (qrCodeText.equals(sTagNum.toString())){
                     // Toast used for Dewbug
                     //Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), qrCodeText + " " + sTagNum, Toast.LENGTH_SHORT);
                     //t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -1185,19 +1212,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TextView myTagView =  (TextView)findViewById(R.id.text);
             myTagId = myTagView.getText().toString();
 
-            sNum = nfcTagSerialNum + ":" + myTagId;
+            sNum = myTagId;
 
             if(sTagNum == null && sNum != null) {
                 checkFlag();
                 prefs.edit().putString("c", sNum).apply();
                 sTagNum = prefs.getString("c", sNum);
-                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), myTagId + getString(R.string.is_registered), Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), myTagId + " " + getString(R.string.is_registered), Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
                 t.show();
 
                 logoTitleName = (TextView)findViewById(R.id.logo_text);
                 cardOneTitle = (prefs.getString("loyaltyCardOneNamePref", myTagId));
-                logoTitleName.setText(cardOneTitle);
+                if (sTagNum == null){
+                    logoTitleName.setText("My uKoo");
+                } else {
+                    logoTitleName.setText(sTagNum);
+                }
 
                 SharedPreferences.Editor prefsEditor = prefs.edit();
                 prefsEditor.putString("loyaltyCardOneNamePref", myTagId);
