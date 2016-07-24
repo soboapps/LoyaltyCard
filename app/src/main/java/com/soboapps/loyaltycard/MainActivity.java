@@ -1,5 +1,6 @@
 package com.soboapps.loyaltycard;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -9,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,7 +27,12 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -41,6 +49,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.client.result.ResultParser;
+import com.jinlin.zxing.CaptureActivity;
+
 import com.soboapps.loyaltycard.record.ParsedNdefRecord;
 
 import java.nio.charset.Charset;
@@ -51,6 +62,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -96,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String sNum;
     public static String sTagNum = null;
     public static String nfcTagSerialNum;
+    public static String qrCodeText;
+
+    public FloatingActionButton fab;
+
+    private static final int REQUEST_CAMERA = 0x00000011;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainRlayout = (RelativeLayout) findViewById(R.id.rLayout);
         View vLogo = findViewById(R.id.logo);
 
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
         mStar1ImageView = (ImageView) findViewById(R.id.img_star_1);
         mStar2ImageView = (ImageView) findViewById(R.id.img_star_2);
         mStar3ImageView = (ImageView) findViewById(R.id.img_star_3);
@@ -134,12 +154,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mStar9ImageView = (ImageView) findViewById(R.id.img_star_9);
 
         if (themePref.equals("defaultTheme")) {
+            ColorStateList rippleColor = ContextCompat.getColorStateList((MainActivity.this.getApplicationContext()), R.color.colorAccent);
+            fab.setBackgroundTintList(rippleColor);
+
         } else if (themePref.equals("icecreamTheme")) {
             mainRlayout.setBackgroundColor(Color.parseColor("#F8BBD0"));
             GradientDrawable shape = (GradientDrawable) vLogo.getBackground().mutate();
             shape.setColor(Color.parseColor("#E91E63"));
             shape.setStroke(15, Color.parseColor("#795548"));
             shape.invalidateSelf();
+            fab.setRippleColor(Color.parseColor("#795548"));
             mStar1ImageView.setImageResource(R.drawable.icecream);
         } else if (themePref.equals("coffeeTheme")) {
             mainRlayout.setBackgroundColor(Color.parseColor("#D7CCC8"));
@@ -147,25 +171,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             shape.setColor(Color.parseColor("#795548"));
             shape.setStroke(15, Color.parseColor("#FF5722"));
             shape.invalidateSelf();
+            fab.setRippleColor(Color.parseColor("#FF5722"));
         } else if (themePref.equals("smoothieTheme")) {
             mainRlayout.setBackgroundColor(Color.parseColor("#FFCDD2"));
             GradientDrawable shape = (GradientDrawable) vLogo.getBackground().mutate();
             shape.setColor(Color.parseColor("#F44336"));
             shape.setStroke(15, Color.parseColor("#FFC107"));
             shape.invalidateSelf();
+            fab.setRippleColor(Color.parseColor("#FFC107"));
         } else if (themePref.equals("sandwichTheme")) {
             mainRlayout.setBackgroundColor(Color.parseColor("#C8E6C9"));
             GradientDrawable shape = (GradientDrawable) vLogo.getBackground().mutate();
             shape.setColor(Color.parseColor("#4CAF50"));
             shape.setStroke(15, Color.parseColor("#FFC107"));
             shape.invalidateSelf();
+            fab.setRippleColor(Color.parseColor("#FFC107"));
         } else if (themePref.equals("muffinTheme")) {
             mainRlayout.setBackgroundColor(Color.parseColor("#D7CCC8"));
             GradientDrawable shape = (GradientDrawable) vLogo.getBackground().mutate();
             shape.setColor(Color.parseColor("#795548"));
             shape.setStroke(15, Color.parseColor("#512DA8"));
             shape.invalidateSelf();
+            fab.setRippleColor(Color.parseColor("#512DA8"));
+
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // Click action to Scan QR Code
+                Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
 
         // This is used to test Logic and Flow - Remarked out when not debugging
         //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), themePref, Toast.LENGTH_SHORT);
@@ -244,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -273,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -302,7 +340,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -331,7 +368,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -360,7 +396,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -389,7 +424,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -418,7 +452,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -447,7 +480,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -476,7 +508,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     onRestart();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    //TODO No button clicked
                                     dialog.dismiss();
                                     break;
                             }
@@ -491,7 +522,87 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+
+        // Check and see if we need permission to use the camera
+        if (ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestCameraPermission();
+        }
+
     }
+
+    private void requestCameraPermission() {
+        Log.i(TAG, "CAMERA permission has NOT been granted. Requesting permission.");
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.CAMERA)) {
+            Log.i(TAG,
+                    "Displaying camera permission rationale to provide additional context.");
+            Snackbar.make(findViewById(R.id.rules), R.string.permission_camera_rationale,
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{Manifest.permission.CAMERA},
+                                    REQUEST_CAMERA);
+                        }
+                    })
+                    .show();
+        } else {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    REQUEST_CAMERA);
+        }
+    }
+
+    //Results of the QR Code scan from CaptureActivity.class
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                qrCodeText = data.getStringExtra("qrcodevalue");
+                // Check to make sure it's the correct QR Code
+                sTagNum = prefs.getString("c", sNum);
+                if (qrCodeText.equals(sTagNum.toString())){
+                    // Toast used for Dewbug
+                    //Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), qrCodeText + " " + sTagNum, Toast.LENGTH_SHORT);
+                    //t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+                    //t.show();
+                    creditPurchase();
+                } else {
+
+                    Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), getString(R.string.incorrect_tag), Toast.LENGTH_SHORT);
+                    t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+                    t.show();
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    //new ZxingOrient(MainActivity.this).initiateScan();
+
+                } else {
+
+                    finish();
+                }
+            }
+            break;
+        }
+    }
+
+
 
     // The Pop-out menu
     public void displayView(int viewId) {
@@ -1111,125 +1222,131 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             mySTagUrl = sNum;
 
-            // This is used to test Logic and Flow - Remark out when not debugging
-            //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), "sNum:" + sTagNum, Toast.LENGTH_SHORT);
-            //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
-            //sn.show();
 
-            //Clear the Card after Freebee
-            if (sNum != null && sTagNum != null)
-                if ((s9flag == true) && mySTagUrl.equals(sTagNum.toString())) {
-                    Toast toast = Toast.makeText(this, getString(R.string.you_redeemed), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
+            if (sTagNum != null && sTagNum.equals(sNum)) {
+                creditPurchase();
+            }
 
-                    resetImages();
 
-                    return;
+        }
+    }
+
+    public void creditPurchase(){
+
+        // This is used to test Logic and Flow - Remark out when not debugging
+        //Toast sn = Toast.makeText(MainActivity.this.getApplicationContext(), "sNum:" + sTagNum, Toast.LENGTH_SHORT);
+        //sn.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+        //sn.show();
+
+        //Toast t = Toast.makeText(MainActivity.this.getApplicationContext(), qrCodeText + " " + sTagNum, Toast.LENGTH_SHORT);
+        //t.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+        //t.show();
+
+        //Clear the Card after Freebee
+        if (sTagNum != null)
+            if ((s9flag == true)) {
+                Toast toast = Toast.makeText(this, getString(R.string.you_redeemed), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
+
+                resetImages();
+
+                return;
 
                 // Punch Card begins after Card Paired
-                } else if ((sNum != null && s1flag == false) && mySTagUrl.equals(sTagNum.toString())) {
+            } else if ((sTagNum != null && s1flag == false)) {
 
-                    s1flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s1selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 1 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s1flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s1selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 1 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s1flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s2flag == false))) {
+            } else if ((sTagNum != null && s1flag == true) && ((s2flag == false))) {
 
-                    s2flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s2selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 2 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s2flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s2selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 2 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s2flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s3flag == false))) {
+            } else if ((sTagNum != null && s2flag == true) && ((s3flag == false))) {
 
-                    s3flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s3selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 3 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s3flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s3selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 3 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s3flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s4flag == false))) {
+            } else if ((sTagNum != null && s3flag == true) && ((s4flag == false))) {
 
-                    s4flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s4selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 4 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s4flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s4selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 4 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s4flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s5flag == false))) {
+            } else if ((sTagNum != null && s4flag == true) && ((s5flag == false))) {
 
-                    s5flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s5selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 5 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s5flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s5selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 5 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s5flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s6flag == false))) {
+            } else if ((sTagNum != null && s5flag == true) && ((s6flag == false))) {
 
-                    s6flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s6selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 6 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s6flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s6selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 6 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s6flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s7flag == false))) {
+            } else if ((sTagNum != null && s6flag == true) && ((s7flag == false))) {
 
-                    s7flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s7selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 7 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s7flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s7selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 7 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s7flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s8flag == false))) {
+            } else if ((sTagNum != null && s7flag == true) && ((s8flag == false))) {
 
-                    s8flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s8selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 8 " + getString(R.string.credit), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s8flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s8selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.thankyou) + " 8 " + getString(R.string.credit), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                } else if ((sNum != null && s8flag == true) && mySTagUrl.equals(sTagNum.toString()) && ((s9flag == false))) {
+            } else if ((sTagNum != null && s8flag == true) && ((s9flag == false))) {
 
-                    s9flag = true;
-                    checkFlag();
-                    prefs.edit().putBoolean("s9selected", true).apply();
-                    Toast toast = Toast.makeText(this, getString(R.string.congrats), Toast.LENGTH_SHORT);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                    break;
+                s9flag = true;
+                checkFlag();
+                prefs.edit().putBoolean("s9selected", true).apply();
+                Toast toast = Toast.makeText(this, getString(R.string.congrats), Toast.LENGTH_SHORT);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
 
-                }
-        }
+            }
+
     }
 
     // This is called from the CardSettings.class to reset the card

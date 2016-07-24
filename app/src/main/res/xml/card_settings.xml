@@ -10,7 +10,7 @@
         android:title="@string/card_name"
         android:key="NamePref">
 
-             <EditTextPreference
+             <Preference
                 android:id="@+id/logotext"
                 android:editable="false"
                 android:title="@string/card_name"

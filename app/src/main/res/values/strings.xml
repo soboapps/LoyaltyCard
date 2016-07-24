@@ -21,11 +21,11 @@
     <string name="store1phone">Phone: (555)555-1212</string>
     <string name="store1fax">Fax: (555)555-1213</string>
     <string name="store1hours">Hours: Mon - Fri, 6:30am - 4:00pm</string>
-    <string name="rules">One stamp for each purchase.\n Not valid in conjuction with any other coupons, offers, or discounts.\n</string>
-    <string name="is_registered"> is Now Registered</string>
+    <string name="rules">One Credit for each purchase.\n Not valid in conjuction with any other coupons, offers, or discounts.\n SoBo Apps nor the Affiliates are responsible for lost Credits.\n</string>
+    <string name="is_registered">  is Now Registered</string>
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
-    <string name="no">no</string>
+    <string name="no">No</string>
     <string name="nfc_message">Message from NFC Reader :-)</string>
     <string name="remove_credit">Remove the Credit?</string>
     <string name="something_wrong">Something is Wrong</string>
@@ -42,6 +42,42 @@
     <string name="reuse_card">Reuse Card?</string>
     <string name="clear_settings">Clear Card Settings</string>
     <string name="set_theme">Set a Theme</string>
+
+    <string name="scanner_activity">ZXing Scanner - Full Activity</string>
+    <string name="scanner_fragment_activity">ZXing Scanner - Full Fragment Activity</string>
+    <string name="simple_scanner_activity">ZXing Scanner - Simple Activity</string>
+    <string name="simple_scanner_fragment_activity">ZXing Scanner - Simple Fragment Activity</string>
+    <string name="full_screen_scanner_fragment_activity">ZXing Scanner - Full Screen Fragment Activity</string>
+    <string name="simple_activity_sample">Simple Activity Sample</string>
+    <string name="simple_fragment_sample">Simple Fragment Sample</string>
+    <string name="activity_sample">Full Activity Sample</string>
+    <string name="fragment_sample">Full Fragment Sample</string>
+    <string name="full_screen_sample">Full Screen Fragment Sample</string>
+    <string name="toggle_flash">Flash</string>
+    <string name="flash_on">Flash [ON]</string>
+    <string name="flash_off">Flash [OFF]</string>
+    <string name="auto_focus_on">Auto Focus [ON]</string>
+    <string name="auto_focus_off">Auto Focus [OFF]</string>
+    <string name="formats">Formats</string>
+    <string name="choose_formats">Choose Formats</string>
+    <string name="select_camera">Select a Camera</string>
+    <string name="ok_button">OK</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="scan_tips">\ " The two-dimensional code image alignment scan box to automatically scan \ "</string>
+
+    <string name="placeHolder">placeHolder</string>
+    <string name="seekbar_add">+</string>
+    <string name="seekbar_minus">-</string>
+    <string name="create">Generation</string>
+    <string name="scan_failed">Scan failed</string>
+    <string name="bottom_hint">Suggestions and lens holding 10CM distance , try to avoid backlighting and shadows</string>
+    <string name="top_hint">Place My uKoo Code within the frame to scan</string>
+    <string name="cancel">cancel</string>
+    <string name="msg_camera_framework_bug">Sorry , the Android camera problems . You may need to restart the device .</string>
+    <string name="button_ok">determine</string>
+
+    <string name="permission_camera_rationale">This App needs to access Camera to present you with the Demo.</string>
+    <string name="permission_vibrate_rationale">Vibration Permission is required to present you with the Demo.</string>
 
 
     <string-array

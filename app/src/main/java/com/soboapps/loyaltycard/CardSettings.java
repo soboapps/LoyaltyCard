@@ -29,7 +29,7 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
     PreferenceCategory sn;
 
     public String mLogoTitle;
-    EditTextPreference cardNamePref;
+    Preference cardNamePref;
     String cardNamePrefSummary;
     String themeNamePref;
     String themeName;
@@ -86,18 +86,18 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
 
-        cardNamePref = (EditTextPreference)findPreference("loyaltyCardOneNamePref");
+        cardNamePref = (Preference)findPreference("loyaltyCardOneNamePref");
         cardNamePrefSummary = prefs.getString("c", cardNameSummary);
         themeNamePref = prefs.getString("themePref", themeNamePref);
         cardNamePref.setSummary(cardNamePrefSummary);
 
         mLogoTitle = String.valueOf(cardNamePref);
         themeName = String.valueOf(themeNamePref);
-        cardNamePref.setText(prefs.getString("loyaltyCardOneNamePref", "My uKoo"));
+        //cardNamePref.setText(prefs.getString("loyaltyCardOneNamePref", "My uKoo"));
 
         reset = findPreference("resetPrefs");
 
-        n = (PreferenceCategory)findPreference("NamePref");
+        //n = (PreferenceCategory)findPreference("NamePref");
         t = findPreference("ThemePref");
 
         mDialog = new AlertDialog.Builder(this).setNeutralButton(getString(R.string.ok), null).create();
@@ -142,6 +142,7 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
             }
         });
 
+        /*
         n.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
             @Override
@@ -154,7 +155,8 @@ public class CardSettings extends PreferenceActivity implements SharedPreference
 
                 return true;
             }
-    });
+        });
+        */
     }
 
     @Override

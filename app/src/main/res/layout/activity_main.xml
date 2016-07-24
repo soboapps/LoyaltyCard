@@ -160,7 +160,11 @@
                     android:scaleType="centerCrop"
                     android:layout_weight="1" />
 
+
+
+
             </LinearLayout>
+
 
             <TextView
                 android:id="@+id/rules"
@@ -171,7 +175,23 @@
                 android:textStyle="bold"
                 android:paddingTop="3dp" />
 
+
         </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_fullscreen_black_24dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:fabSize="normal"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            app:rippleColor="@android:color/transparent"
+            android:layout_margin="6dp" />
+
     </RelativeLayout>
 
 

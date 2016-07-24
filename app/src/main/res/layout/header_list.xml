@@ -26,4 +26,5 @@
         android:layout_alignParentBottom="true"
         android:textColor="@color/abc_primary_text_material_dark" />
 
+
 </RelativeLayout>

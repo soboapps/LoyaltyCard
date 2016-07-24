@@ -72,4 +72,21 @@
     <color name="colorMuffinIcons">#FFFFFF</color>
     <color name="colorMuffinDivider">#B6B6B6</color>
 
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#00000000</color>
+    <color name="capture_text_cover_bg">#00000000</color>
+    <color name="seek_bar_text">#fff6f6f6</color>
+    <color name="windowBackground">#1976D2</color>
+    <color name="navigationBarColor">#1976D2</color>
+    <color name="fab_color_pressed">#1976D2</color>
+    <color name="fab_color_normal">#1976D2</color>
 </resources>
