@@ -1,7 +1,7 @@
 # Android QR Code/NFC Loyalty Card
 QR Code/NFC Loyalty Card for Android
 
-Only 2 things needed for a Digital Loyalty Card...  An Android Phone and an QR Code or a NFC Tag (Very Cheap, you can get 20 (NTAG213) for $20.00 on Amazon) You can download a Free NFC Tag Writer like NFC Tools (https://play.google.com/store/apps/details?id=com.wakdev.wdnfc) and write the text to the tag.  No expensive hardware or Internet based tracking software required.  You can't get any closer to an actual Punch Card than this.
+Only 2 things needed for a Digital Loyalty Card...  An Android Phone and a QR Code or a NFC Tag (Very Cheap, you can get 20 (NTAG213) for $20.00 on Amazon) You can download a Free NFC Tag Writer like NFC Tools (https://play.google.com/store/apps/details?id=com.wakdev.wdnfc) and write the text to the tag.  No expensive hardware or Internet based tracking software required.  You can't get any closer to an actual Punch Card than this.
 
 As a Store Owner you would create a QR Code and Print it or program a Tag with your Store Name.  If you change the QR Code or the Tag, all users will need to reset the app to clear the currently paired QR/Tag.
 
